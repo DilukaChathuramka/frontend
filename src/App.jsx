@@ -10,6 +10,10 @@ import Dashboard from "./pages/dashboard/Dashboard.jsx";
 import Cards from "./pages/dashboard/Cards";
 import Login from "./pages/Login";
 import Signin from "./pages/Signin";
+import axios from "axios";
+import Verify from "./pages/Verify";
+axios.defaults.baseURL = "http://localhost:5000";
+axios.defaults.withCredentials = true;
 
 function App() {
   return (
@@ -38,6 +42,14 @@ function App() {
             element={
               <Layout>
                 <Signin />
+              </Layout>
+            }
+          />
+          <Route
+            path="/user/:id/verify/:token"
+            element={
+              <Layout>
+                <Verify />
               </Layout>
             }
           />
