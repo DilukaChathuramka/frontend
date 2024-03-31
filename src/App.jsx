@@ -14,6 +14,8 @@ import axios from "axios";
 import Verify from "./pages/Verify";
 import { UserProvider } from "./context/UserContext";
 import Addvehicle from "./pages/dashboard/vehicle/Addvehicle.jsx";
+import DriverManagement from "./pages/dashboard/driver/DriverManagement";
+import DriverRegistration from "./pages/dashboard/driver/DriverRegistration";
 axios.defaults.baseURL = "http://localhost:5000";
 axios.defaults.withCredentials = true;
 
@@ -64,6 +66,22 @@ function App() {
             </Dashboard>
           }
         />
+        <Route
+            path="/driver-registration"
+            element={
+              <Dashboard>
+                <DriverRegistration />
+              </Dashboard>
+            }
+          />
+          <Route
+            path="/allvehicle"
+            element={
+              <Dashboard>
+                <DriverManagement/>
+              </Dashboard>
+            }
+          />
       </Routes>
 
       </UserProvider>
