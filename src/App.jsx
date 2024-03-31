@@ -12,6 +12,7 @@ import Login from "./pages/Login";
 import Signin from "./pages/Signin";
 import axios from "axios";
 import Verify from "./pages/Verify";
+import { UserProvider } from "./context/UserContext";
 import Addvehicle from "./pages/dashboard/vehicle/Addvehicle.jsx";
 axios.defaults.baseURL = "http://localhost:5000";
 axios.defaults.withCredentials = true;
@@ -19,7 +20,7 @@ axios.defaults.withCredentials = true;
 function App() {
   return (
     <>
-
+<UserProvider>
       <Routes>
         <Route path="/" element={<><Header /><Home /><Feature /><GetStart /><Footer /></>} />
         <Route
@@ -65,7 +66,7 @@ function App() {
         />
       </Routes>
 
-
+      </UserProvider>
     </>
   );
 }

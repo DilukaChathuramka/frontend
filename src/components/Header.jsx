@@ -1,11 +1,27 @@
-import React,{useState} from 'react'
+import React, { useContext, useState } from "react";
 import { FaRegUser } from "react-icons/fa";
+import { Link } from "react-router-dom";
+import { useUser } from "../context/UserContext"
+import { IoIosLogOut } from "react-icons/io";
+import axios from "axios";
 
 function Header() {
   const [isActive, setIsActive] = useState(false);
-
+  const { user} = useUser();
   const toggleNav = () => {
     setIsActive(!isActive);
+  };
+
+  const logout = async () => {
+    try {
+      const logOut = await axios.get("/user/logout");
+      if (logOut.data) {
+        // console.log(logOut.data.message);
+        window.location.href = "http://localhost:5173/";
+      }
+    } catch (err) {
+      console.log(err.message);
+    }
   };
 
   
@@ -34,14 +50,19 @@ function Header() {
             </li>
         </ul>
       </nav>
+      {user && (
+            <div className="d-flex align-items-center">
+              <a href="#" className="btn user-btn" aria-label="Profile">
+                <Link to={"/user-profile"}>
+                  <FaRegUser/>
+                </Link>
+              </a>
+              <a href="#" className="" aria-label="Profile">
+                <IoIosLogOut onClick={logout}  className="mx-3"/>
+              </a>
+            </div>
+          )}
       <div className="header-actions">
-        <div className="header-contact">
-          <a href="tel:88002345678" className="contact-link">phone no</a>
-          <span className="contact-time">Mon - Sat: 9:00 am - 6:00 pm</span>
-        </div>
-        <a href="#" className="btn user-btn" aria-label="Profile">
-        <FaRegUser/>
-        </a>
         <button className={`nav-toggle-btn ${isActive ? 'active' : ''}`} onClick={toggleNav} aria-label="Toggle Menu">
           <span className="one"></span>
           <span className="two"></span>
