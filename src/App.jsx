@@ -1,4 +1,4 @@
-import React from "react";
+
 import { Routes, Route } from "react-router-dom";
 import Layout from "./pages/Layout.jsx";
 import Home from "./pages/Home";
@@ -16,6 +16,8 @@ import { UserProvider } from "./context/UserContext";
 import Addvehicle from "./pages/dashboard/vehicle/Addvehicle.jsx";
 import DriverManagement from "./pages/dashboard/driver/DriverManagement";
 import DriverRegistration from "./pages/dashboard/driver/DriverRegistration";
+import PackageAddForm from "./pages/dashboard/packages/PackageAddForm";
+import Packages from "./pages/Packages";
 axios.defaults.baseURL = "http://localhost:5000";
 axios.defaults.withCredentials = true;
 
@@ -81,6 +83,36 @@ function App() {
                 <DriverManagement/>
               </Dashboard>
             }
+          />
+          <Route
+
+path="/packages"
+
+element={
+
+  <Layout>
+
+    <Packages />
+
+  </Layout>
+
+}
+
+/>
+<Route
+
+            path="/dashPackage"
+
+            element={
+
+              <Dashboard>
+
+                <PackageAddForm/>
+
+              </Dashboard>
+
+            }
+
           />
       </Routes>
 
