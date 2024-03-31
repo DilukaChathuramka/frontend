@@ -112,6 +112,11 @@ function Dashboard({ children }) {
                 data-parent="#accordionSidebar"
               >
                 <div className="bg-white py-2 collapse-inner rounded">
+              <a className="collapse-item" href="/allvehicle">
+                Driver Managment
+              </a>
+            </div>
+                <div className="bg-white py-2 collapse-inner rounded">
                   <a className="collapse-item" href="/driver-registration">
                     Add driver
                   </a>
