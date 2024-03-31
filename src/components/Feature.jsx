@@ -1,99 +1,115 @@
-import React from 'react'
-
+import axios from "axios";
+import React, { useState } from "react";
+import { useEffect } from "react";
 
 function Feature() {
+  const [vehicles, setVehicles] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get("/vehicle/allvehicle");
+        setVehicles(response.data); // Assuming the response contains the array of vehicles
+      } catch (error) {
+        console.error("Error fetching data: ", error);
+        // Handle errors here, for example, by setting an error state
+      }
+    };
+
+    fetchData();
+  }, []);
+
+
   return (
     <div>
-        <section class="section featured-car" id="featured-car">
-<div class="container">
+      <section class="section featured-car" id="featured-car">
+        <div class="container">
+          <div class="title-wrapper">
+            <h2 class="h2 section-title">Featured cars</h2>
 
-  <div class="title-wrapper">
-    <h2 class="h2 section-title">Featured cars</h2>
+            <a href="#" class="featured-car-link">
+              <span>View more</span>
 
-    <a href="#" class="featured-car-link">
-      <span>View more</span>
-
-      <ion-icon name="arrow-forward-outline"></ion-icon>
-    </a>
-  </div>
-
-  <ul class="featured-car-list">
-
- 
-
-
-    <li>
-      <div class="featured-car-card">
-
-        <figure class="card-banner">
-          <img src="../../public/images/car-6.jpg" alt="BMW 4 Series 2019" loading="lazy" width="440" height="300"
-            class="w-100"/>
-        </figure>
-
-        <div class="card-content">
-
-          <div class="card-title-wrapper">
-            <h3 class="h3 card-title">
-              <a href="#">BMW 4 Series</a>
-            </h3>
-
-            <data class="year" value="2019">2019</data>
+              <ion-icon name="arrow-forward-outline"></ion-icon>
+            </a>
           </div>
 
-          <ul class="card-list">
+          <ul class="featured-car-list">
+            {vehicles.map((vehicle) => (
+              <li key={vehicle._id}>
+                <div className="featured-car-card">
+                  <figure className="card-banner">
+                    {/* Replace with your dynamic image URL */}
+                    <img
+                      src={
+                        vehicle.image
+                          ? `http://localhost:5000/${vehicle.image.replace(
+                              /\\/g,
+                              "/"
+                            )}`
+                          : "imgae is loading"
+                      }
+                      alt={vehicle.vehicleName || "Default Vehicle Name"}
+                      loading="lazy"
+                      width="440"
+                      height="300"
+                      className="w-100"
+                    />
+                  </figure>
 
-            <li class="card-list-item">
-              <ion-icon name="people-outline"></ion-icon>
+                  <div className="card-content">
+                    <div className="card-title-wrapper">
+                      <h3 className="h3 card-title">
+                        {vehicle.vehicleName}{" "}
+                        <span
+                          style={{ fontSize: "15px" }}
+                          className="text-success"
+                        >
+                          <b>{vehicle.vehicletype}</b>
+                        </span>
+                      </h3>
 
-              <span class="card-item-text">4 People</span>
-            </li>
+                      {/* Additional vehicle details can be added here */}
+                    </div>
 
-            <li class="card-list-item">
-              <ion-icon name="flash-outline"></ion-icon>
+                    <ul className="card-list">
+                      {/* Dynamically add list items based on available data */}
+                      <li className="card-list-item">
+                        <ion-icon name="people-outline"></ion-icon>
+                        <span className="card-item-text">
+                          {vehicle.seatCapacity} People
+                        </span>
+                          
+                      </li>
 
-              <span class="card-item-text">Gasoline</span>
-            </li>
+                      {/* Other list items... */}
+                    </ul>
 
-            <li class="card-list-item">
-              <ion-icon name="speedometer-outline"></ion-icon>
+                    <div className="card-price-wrapper">
+                      {/* Pricing and other actions */}
+                      <p className="card-price">
+                        <strong>$490</strong> / month{" "}
+                        {/* Replace with dynamic pricing */}
+                      </p>
 
-              <span class="card-item-text">7.2km / 1-litre</span>
-            </li>
+                      <button
+                        className="btn fav-btn"
+                        aria-label="Add to favourite list"
+                      >
+                        <ion-icon name="heart-outline">{vehicle.condition}</ion-icon>
+                      </button>
 
-            <li class="card-list-item">
-              <ion-icon name="hardware-chip-outline"></ion-icon>
-
-              <span class="card-item-text">Automatic</span>
-            </li>
-
+                      <button className="btn">Rent now</button>
+                    </div>
+                  </div>
+                </div>
+              </li>
+            ))}
           </ul>
-
-          <div class="card-price-wrapper">
-
-            <p class="card-price">
-              <strong>$490</strong> / month
-            </p>
-
-            <button class="btn fav-btn" aria-label="Add to favourite list">
-              <ion-icon name="heart-outline"></ion-icon>
-            </button>
-
-            <button class="btn">Rent now</button>
-
-          </div>
-
         </div>
-
-      </div>
-    </li>
-
-  </ul>
-
-</div>
-</section>
-
+      </section>
     </div>
-  )
+  );
 }
 
-export default Feature
+export default Feature;

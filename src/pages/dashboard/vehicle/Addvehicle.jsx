@@ -30,10 +30,12 @@ function Addvehicle() {
       if (key !== "image") {
         formData.append(key, vehicledata[key]);
       }
-      if (vehicledata.image) {
-        formData.append("image", vehicledata.image);
-      }
     });
+
+    // Append the image outside the forEach loop
+    if (vehicledata.image) {
+      formData.append("image", vehicledata.image);
+    }
     try {
       const response = await axios.post("/vehicle/addvehicle", formData, {
         headers: {
@@ -44,7 +46,7 @@ function Addvehicle() {
         setMessage(response.data.message);
       }
     } catch (error) {
-      console.log("errr");
+      setErrMsg("Fail Add");
     }
   };
 
@@ -112,7 +114,7 @@ function Addvehicle() {
                 <input
                   class="form-check-input"
                   type="radio"
-                  value="ac"
+                  value="AC"
                   name="condition"
                   id="flexRadioDefault1"
                   onChange={(e) =>
@@ -130,7 +132,7 @@ function Addvehicle() {
                 <input
                   class="form-check-input"
                   type="radio"
-                  value="nonAc"
+                  value="NonAc"
                   name="condition"
                   id="flexRadioDefault2"
                   onChange={(e) =>
@@ -206,7 +208,14 @@ function Addvehicle() {
               <label for="inputAddress" class="form-label">
                 ADD image
               </label>
-              <input type="file" accept="image/*" onChange={(e) => SetVehicleData({ ...vehicledata, image: e.target.files[0] })}/>
+              <input
+                type="file"
+                accept="image/*"
+                name="image"
+                onChange={(e) =>
+                  SetVehicleData({ ...vehicledata, image: e.target.files[0] })
+                }
+              />
             </div>
 
             <div class="col-12 d-flex justify-content-center">

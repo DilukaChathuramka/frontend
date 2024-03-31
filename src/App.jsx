@@ -12,50 +12,60 @@ import Login from "./pages/Login";
 import Signin from "./pages/Signin";
 import axios from "axios";
 import Verify from "./pages/Verify";
+import Addvehicle from "./pages/dashboard/vehicle/Addvehicle.jsx";
 axios.defaults.baseURL = "http://localhost:5000";
 axios.defaults.withCredentials = true;
 
 function App() {
   return (
     <>
-      
+
       <Routes>
-        <Route path="/" element={<><Header/><Home /><Feature /><GetStart /><Footer/></>} />
-         <Route
-            path="/dashboard"
-            element={
-              <Dashboard>
-                <Cards />
-              </Dashboard>
-            }
-          />
-<Route
-            path="/login"
-            element={
-              <Layout>
-                <Login />
-              </Layout>
-            }
-          />
-          <Route
-            path="/signin"
-            element={
-              <Layout>
-                <Signin />
-              </Layout>
-            }
-          />
-          <Route
-            path="/user/:id/verify/:token"
-            element={
-              <Layout>
-                <Verify />
-              </Layout>
-            }
-          />
+        <Route path="/" element={<><Header /><Home /><Feature /><GetStart /><Footer /></>} />
+        <Route
+          path="/dashboard"
+          element={
+            <Dashboard>
+              <Cards />
+            </Dashboard>
+          }
+        />
+        <Route
+          path="/login"
+          element={
+            <Layout>
+              <Login />
+            </Layout>
+          }
+        />
+        <Route
+          path="/signin"
+          element={
+            <Layout>
+              <Signin />
+            </Layout>
+          }
+        />
+        <Route
+          path="/user/:id/verify/:token"
+          element={
+            <Layout>
+              <Verify />
+            </Layout>
+          }
+        />
+
+        <Route
+          path="/vehicle-add"
+          element={
+            <Dashboard>
+              <Addvehicle />
+            </Dashboard>
+          }
+        />
       </Routes>
 
-   
+
     </>
   );
 }
