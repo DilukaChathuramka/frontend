@@ -1418,3 +1418,12 @@ button, a { transition: var(--transition); }
   text-transform: uppercase;
   box-shadow: 0 5px 10px rgba(0,0,0,0.12);
 }
+
+.cart-style {
+  width: 211px;
+  height: 56px;
+  border-radius: 4px;
+  background-color: #DB4444;
+  border: none;
+  color: white;
+}
