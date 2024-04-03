@@ -24,6 +24,7 @@ import PayementDetails from "./pages/dashboard/payment/PayementDetails";
 import Fedback from "./pages/Fedback";
 import FeedbackFrom from "./pages/FeedbackFrom";
 import ShowFeeback from "./pages/dashboard/feedback/ShowFeeback";
+import CustommizePackage from "./pages/CustommizePackage";
 axios.defaults.baseURL = "http://localhost:5000";
 axios.defaults.withCredentials = true;
 
@@ -112,6 +113,14 @@ function App() {
               <Dashboard>
                 <DriverManagement/>
               </Dashboard>
+            }
+          />
+           <Route
+            path="/cutomizepackages"
+            element={
+              <Layout>
+                <CustommizePackage />
+              </Layout>
             }
           />
           <Route
