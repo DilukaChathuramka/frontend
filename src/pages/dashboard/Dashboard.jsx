@@ -4,6 +4,7 @@ import { FaCarSide } from "react-icons/fa6";
 import { IoIosArrowForward } from "react-icons/io";
 import { CiUser } from "react-icons/ci";
 import { IoCarSportOutline } from "react-icons/io5";
+import { LuPackage2 } from "react-icons/lu";
 
 function Dashboard({ children }) {
   const [style, setStyle] = useState(
@@ -148,6 +149,55 @@ function Dashboard({ children }) {
                   </a>
                 </div>
               </div>
+            </li>
+            <li className="nav-item">
+
+              <a
+
+                className="nav-link collapsed"
+
+                href="#"
+
+                data-toggle="collapse"
+
+                data-target="#collapsepackage"
+
+                aria-expanded="true"
+
+                aria-controls="collapsePages"
+
+              >
+
+                <LuPackage2 className="mx-2"/>
+
+                <span>Packages</span>
+
+              </a>
+
+              <div
+
+                id="collapsepackage"
+
+                className="collapse"
+
+                aria-labelledby="headingPages"
+
+                data-parent="#accordionSidebar"
+
+              >
+
+                <div className="bg-white py-2 collapse-inner rounded">
+
+                  <a className="collapse-item" href="/dashPackage">
+
+                   Add package
+
+                  </a>
+
+                </div>
+
+              </div>
+
             </li>
           </ul>
           <div id="content-wrapper" className="d-flex flex-column">
