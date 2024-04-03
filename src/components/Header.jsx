@@ -39,6 +39,11 @@ function Header() {
           <li><a href="#" className="navbar-link" onClick={toggleNav}>About us</a></li>
           <li><a href="/packages" className="navbar-link" onClick={toggleNav}>Packages</a></li>
           <li>
+              <a href="/feedback" className="navbar-link" onClick={toggleNav}>
+                Feedback
+              </a>
+            </li>
+          <li>
               <a href="/signin" className="navbar-link" onClick={toggleNav}>
                 Sign In
               </a>
