@@ -21,6 +21,9 @@ import Packages from "./pages/Packages";
 import Payment from "./pages/Payment";
 import Allpayment from "./pages/dashboard/payment/Allpayment";
 import PayementDetails from "./pages/dashboard/payment/PayementDetails";
+import Fedback from "./pages/Fedback";
+import FeedbackFrom from "./pages/FeedbackFrom";
+import ShowFeeback from "./pages/dashboard/feedback/ShowFeeback";
 axios.defaults.baseURL = "http://localhost:5000";
 axios.defaults.withCredentials = true;
 
@@ -141,6 +144,35 @@ element={
             }
 
           />
+
+<Route
+            path="/feedback"
+            element={
+              <Layout>
+                <Fedback />
+              </Layout>
+            }
+          />
+
+<Route
+            path="/feedback-form"
+            element={
+              <Layout>
+                <FeedbackFrom />
+              </Layout>
+            }
+          />
+
+
+<Route
+            path="/getfeedback"
+            element={
+              <Dashboard>
+                <ShowFeeback/>
+              </Dashboard>
+            }
+          />
+
       </Routes>
 
       </UserProvider>

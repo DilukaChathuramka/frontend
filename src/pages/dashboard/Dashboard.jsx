@@ -225,6 +225,33 @@ function Dashboard({ children }) {
               </div>
 
             </li>
+
+            <li className="nav-item">
+              <a
+                className="nav-link collapsed"
+                href="#"
+                data-toggle="collapse"
+                data-target="#collapsefeedback"
+                aria-expanded="true"
+                aria-controls="collapsePages"
+              >
+                <IoCarSportOutline className="mx-2"/>
+                <span>Feedback</span>
+              </a>
+              <div
+                id="collapsefeedback"
+                className="collapse"
+                aria-labelledby="headingPages"
+                data-parent="#accordionSidebar"
+              >
+                <div className="bg-white py-2 collapse-inner rounded">
+                  <a className="collapse-item" href="/getfeedback">
+                   All Fedback
+                  </a>
+                </div>
+              </div>
+            </li>
+            
           </ul>
           <div id="content-wrapper" className="d-flex flex-column">
             <div id="content">
