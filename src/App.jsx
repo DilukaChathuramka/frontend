@@ -18,6 +18,9 @@ import DriverManagement from "./pages/dashboard/driver/DriverManagement";
 import DriverRegistration from "./pages/dashboard/driver/DriverRegistration";
 import PackageAddForm from "./pages/dashboard/packages/PackageAddForm";
 import Packages from "./pages/Packages";
+import Payment from "./pages/Payment";
+import Allpayment from "./pages/dashboard/payment/Allpayment";
+import PayementDetails from "./pages/dashboard/payment/PayementDetails";
 axios.defaults.baseURL = "http://localhost:5000";
 axios.defaults.withCredentials = true;
 
@@ -73,6 +76,30 @@ function App() {
             element={
               <Dashboard>
                 <DriverRegistration />
+              </Dashboard>
+            }
+          />
+           <Route
+            path="/payment"
+            element={
+              <Layout>
+                <Payment />
+              </Layout>
+            }
+          />
+           <Route
+            path="/allpay"
+            element={
+              <Dashboard>
+                <Allpayment/>
+              </Dashboard>
+            }
+          />
+           <Route
+            path="/payment-details/:id"
+            element={
+              <Dashboard>
+                <PayementDetails/>
               </Dashboard>
             }
           />

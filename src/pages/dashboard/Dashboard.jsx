@@ -5,6 +5,7 @@ import { IoIosArrowForward } from "react-icons/io";
 import { CiUser } from "react-icons/ci";
 import { IoCarSportOutline } from "react-icons/io5";
 import { LuPackage2 } from "react-icons/lu";
+import { FaRegMoneyBillAlt } from "react-icons/fa";
 
 function Dashboard({ children }) {
   const [style, setStyle] = useState(
@@ -146,6 +147,31 @@ function Dashboard({ children }) {
                 <div className="bg-white py-2 collapse-inner rounded">
                   <a className="collapse-item" href="/vehicle-add">
                    Add vehile
+                  </a>
+                </div>
+              </div>
+            </li>
+            <li className="nav-item">
+              <a
+                className="nav-link collapsed"
+                href="#"
+                data-toggle="collapse"
+                data-target="#collapsepayement"
+                aria-expanded="true"
+                aria-controls="collapsePages"
+              >
+                <FaRegMoneyBillAlt className="mx-2"/>
+                <span>payement</span>
+              </a>
+              <div
+                id="collapsepayement"
+                className="collapse"
+                aria-labelledby="headingPages"
+                data-parent="#accordionSidebar"
+              >
+                <div className="bg-white py-2 collapse-inner rounded">
+                  <a className="collapse-item" href="/allpay">
+                   All payment
                   </a>
                 </div>
               </div>
