@@ -15,7 +15,7 @@ export const UserProvider = ({ children }) => {
   useEffect(() => {
     axios.get('/user/getuser')
       .then(({ data }) => {
-        if (data.newuser && data.newuser.isActive===true && data.newuser.role==="user") {
+        if (data.newuser && data.newuser.isActive===true) {
           setUser(data.newuser);
         } else {
           setError('User not found');

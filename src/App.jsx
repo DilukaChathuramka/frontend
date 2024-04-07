@@ -25,6 +25,8 @@ import Fedback from "./pages/Fedback";
 import FeedbackFrom from "./pages/FeedbackFrom";
 import ShowFeeback from "./pages/dashboard/feedback/ShowFeeback";
 import CustommizePackage from "./pages/CustommizePackage";
+import Addemp from "./pages/dashboard/employee/Addemp";
+import Empmanage from "./pages/dashboard/employee/Empmanage";
 axios.defaults.baseURL = "http://localhost:5000";
 axios.defaults.withCredentials = true;
 
@@ -178,6 +180,32 @@ element={
             element={
               <Dashboard>
                 <ShowFeeback/>
+              </Dashboard>
+            }
+          />
+
+<Route
+            path="/employeeAdd"
+            element={
+              <Dashboard>
+                <Addemp/>
+              </Dashboard>
+            }
+          />
+ 
+            <Route
+            path="/empManage"
+            element={
+              <Dashboard>
+                <Empmanage/>
+              </Dashboard>
+            }
+          />
+           <Route
+            path="/empEdit-edit/:id"
+            element={
+              <Dashboard>
+                 <Addemp/>
               </Dashboard>
             }
           />

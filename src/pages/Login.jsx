@@ -30,8 +30,8 @@ function Login() {
       const newUser = response.data.newUser;
       const userRole = newUser.role;
       // updateUser(newUser);
-      if (userRole === "admin") {
-        // window.location.href="https
+      if (userRole === "admin" ||userRole === "employee") {
+        navigate('/dashboard');
       } else {
         // console.log("user")
         navigate('/');
