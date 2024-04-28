@@ -2,12 +2,12 @@ import axios from "axios";
 import React, { useContext, useState } from "react";
 import { FaEyeSlash } from "react-icons/fa6";
 import { FaRegEye } from "react-icons/fa6";
-// import { useUser } from "../context/UserContext";
+import { useUser } from "../context/UserContext";
 import { useNavigate } from "react-router-dom";
 
 function Login() {
   //  const { addToWishlist } = useContext(WishlistContext);
-  // const { user, updateUser } = useUser();
+  const {updateUser } = useUser();
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
   const togglePasswordVisibility = () => {
@@ -23,6 +23,7 @@ function Login() {
     e.preventDefault();
     const { email, password } = data;
     try {
+<<<<<<< Updated upstream
       const response = await axios.post("/user/login", {
         email,
         password,
@@ -37,8 +38,13 @@ function Login() {
         navigate('/');
         // window.location.href="http://localhost:5173"
       }
+=======
+      const response = await axios.post("/user/login", { email, password });
+      updateUser(response.data.newUser); // Update user state on successful login
+      navigate(response.data.newUser.role === "admin" || response.data.newUser.role === "employee" ? '/dashboard' : '/');
+>>>>>>> Stashed changes
     } catch (err) {
-      console.log(err.message)
+      setErrMsg(err.response ? err.response.data.message : 'Login failed');
     }
   };
   // console.log(user);

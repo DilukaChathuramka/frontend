@@ -64,22 +64,26 @@ function Signin() {
           password,
         });
         if (response.data.message ) {
-          setMessage(response.data.message);
           SetData({
             name: "",
             email: "",
             phoneNo: "",
             password: "",
           });
+          setConfirmPass(""); 
+          setMessage(response.data.message);
+
         }
       } catch (error) {
         if (error.response && error.response.data) {
           const message = error.response.data.message;
           if (message === "2") {
             setErrMsg("Password must contain at least 8 characters");
-          } else if (message === "3") {
-            setErrMsg("Username already exists");
+          } else{
+
+            setErrMsg(message);
           }
+          
         } else {
           // Handle the case where error.response is undefined
           setErrMsg("An unexpected error occurred");
@@ -133,6 +137,7 @@ function Signin() {
                   type="text"
                   class="form-control"
                   id="inputEmail"
+                  required
                   aria-describedby="emailHelp"
                   placeholder="Name"
                   style={{
@@ -142,6 +147,7 @@ function Signin() {
                     borderRadius: "0",
                   }}
                   onChange={(e) => SetData({ ...data, name: e.target.value })}
+                  value={data.name}
                 />
               </div>
               <div class="form-group pt-3">
@@ -149,6 +155,7 @@ function Signin() {
                   type="text"
                   class="form-control"
                   id="inputEmail"
+                  required
                   aria-describedby="emailHelp"
                   placeholder="Email"
                   style={{
@@ -161,6 +168,7 @@ function Signin() {
                     SetData({ ...data, email: e.target.value });
                     validateEmail(e.target.value);
                   }}
+                  value={data.email}
                 />
               </div>
               <div class="form-group pt-3">
@@ -170,6 +178,7 @@ function Signin() {
                   id="inputEmail"
                   aria-describedby="emailHelp"
                   placeholder="Phone No"
+                  required
                   style={{
                     border: "none",
                     borderBottom: "1px solid #000",
@@ -180,6 +189,7 @@ function Signin() {
                     SetData({ ...data, phoneNo: e.target.value });
                     validatePhone(e.target.value);
                   }} 
+                  value={data.phoneNo}
                 />
               </div>
 
@@ -188,6 +198,7 @@ function Signin() {
                   type={showPassword ? "text" : "password"}
                   className="form-control"
                   id="inputPassword"
+                  required
                   placeholder="Password"
                   style={{
                     border: "none",
@@ -199,6 +210,7 @@ function Signin() {
                   onChange={(e) =>
                     SetData({ ...data, password: e.target.value })
                   }
+                  value={data.password}
                 />
                 {showPassword ? (
                   <FaRegEye
@@ -233,6 +245,7 @@ function Signin() {
                   type={showconfirmPassword ? "text" : "password"}
                   className="form-control"
                   id="inputPassword"
+                  required
                   placeholder="Confirm password"
                   style={{
                     border: "none",
@@ -242,6 +255,7 @@ function Signin() {
                     paddingRight: "30px", // Make room for the icon
                   }}
                   onChange={(e) => setConfirmPass(e.target.value)}
+                  value={confirmPass}
                 />
                 {showconfirmPassword ? (
                   <FaRegEye
