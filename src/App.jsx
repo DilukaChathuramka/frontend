@@ -27,6 +27,7 @@ import ShowFeeback from "./pages/dashboard/feedback/ShowFeeback";
 import CustommizePackage from "./pages/CustommizePackage";
 import Addemp from "./pages/dashboard/employee/Addemp";
 import Empmanage from "./pages/dashboard/employee/Empmanage";
+import UserDetails from "./pages/dashboard/user/UserDetails.jsx";
 axios.defaults.baseURL = "http://localhost:5000";
 axios.defaults.withCredentials = true;
 
@@ -198,6 +199,14 @@ element={
             element={
               <Dashboard>
                 <Empmanage/>
+              </Dashboard>
+            }
+          />
+           <Route
+            path="/user-details"
+            element={
+              <Dashboard>
+                <UserDetails />
               </Dashboard>
             }
           />

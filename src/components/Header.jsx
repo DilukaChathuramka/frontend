@@ -24,21 +24,36 @@ function Header() {
     }
   };
 
-  
   return (
     <header className="header" data-header>
-    <div className="container">
-      <div className={`overlay ${isActive ? 'active' : ''}`} data-overlay onClick={toggleNav}></div>
-      <a href="/" className="logo">
-        <h3>Rent Car</h3>
-      </a>
-      <nav className={`navbar ${isActive ? 'active' : ''}`} data-navbar>
-        <ul className="navbar-list">
-          <li><a href="/" className="navbar-link" onClick={toggleNav}>Home</a></li>
-          <li><a href="#featured-car" className="navbar-link" onClick={toggleNav}>Explore cars</a></li>
-          <li><a href="#" className="navbar-link" onClick={toggleNav}>About us</a></li>
-          <li><a href="/packages" className="navbar-link" onClick={toggleNav}>Packages</a></li>
-          <li>
+      <div className="container">
+        <div
+          className={`overlay ${isActive ? "active" : ""}`}
+          data-overlay
+          onClick={toggleNav}
+        ></div>
+        <a href="/" className="logo">
+          <h3>DRIVE HIVE</h3>
+        </a>
+        <nav className={`navbar ${isActive ? "active" : ""}`} data-navbar>
+          <ul className="navbar-list">
+            <li>
+              <a href="/" className="navbar-link" onClick={toggleNav}>
+                Home
+              </a>
+            </li>
+            {/* <li><a href="#featured-car" className="navbar-link" onClick={toggleNav}>Explore cars</a></li> */}
+            <li>
+              <a href="#" className="navbar-link" onClick={toggleNav}>
+                About us
+              </a>
+            </li>
+            <li>
+              <a href="/selectpackage" className="navbar-link" onClick={toggleNav}>
+                Packages
+              </a>
+            </li>
+            <li>
               <a
                 href="/cutomizepackages"
                 className="navbar-link"
@@ -47,12 +62,13 @@ function Header() {
                 Customize Package
               </a>
             </li>
-          <li>
+            <li>
               <a href="/feedback" className="navbar-link" onClick={toggleNav}>
-                Feedback
+                Fedback
               </a>
             </li>
-          <li>
+
+            <li>
               <a href="/signin" className="navbar-link" onClick={toggleNav}>
                 Sign In
               </a>
@@ -62,9 +78,10 @@ function Header() {
                 Login
               </a>
             </li>
-        </ul>
-      </nav>
-      {user && (
+          </ul>
+        </nav>
+        <div className="header-actions">
+          {user && (
             <div className="d-flex align-items-center">
               <a href="#" className="btn user-btn" aria-label="Profile">
                 <Link to={"/user-profile"}>
@@ -76,16 +93,20 @@ function Header() {
               </a>
             </div>
           )}
-      <div className="header-actions">
-        <button className={`nav-toggle-btn ${isActive ? 'active' : ''}`} onClick={toggleNav} aria-label="Toggle Menu">
-          <span className="one"></span>
-          <span className="two"></span>
-          <span className="three"></span>
-        </button>
+
+          <button
+            className={`nav-toggle-btn ${isActive ? "active" : ""}`}
+            onClick={toggleNav}
+            aria-label="Toggle Menu"
+          >
+            <span className="one"></span>
+            <span className="two"></span>
+            <span className="three"></span>
+          </button>
+        </div>
       </div>
-    </div>
-  </header>
-  )
+    </header>
+  );
 }
 
-export default Header
+export default Header;

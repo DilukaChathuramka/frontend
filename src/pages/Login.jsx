@@ -2,12 +2,12 @@ import axios from "axios";
 import React, { useContext, useState } from "react";
 import { FaEyeSlash } from "react-icons/fa6";
 import { FaRegEye } from "react-icons/fa6";
-// import { useUser } from "../context/UserContext";
+import { useUser } from "../context/UserContext";
 import { useNavigate } from "react-router-dom";
 
 function Login() {
   //  const { addToWishlist } = useContext(WishlistContext);
-  // const { user, updateUser } = useUser();
+  const {updateUser } = useUser();
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
   const togglePasswordVisibility = () => {
@@ -23,22 +23,11 @@ function Login() {
     e.preventDefault();
     const { email, password } = data;
     try {
-      const response = await axios.post("/user/login", {
-        email,
-        password,
-      });
-      const newUser = response.data.newUser;
-      const userRole = newUser.role;
-      // updateUser(newUser);
-      if (userRole === "admin" ||userRole === "employee") {
-        navigate('/dashboard');
-      } else {
-        // console.log("user")
-        navigate('/');
-        // window.location.href="http://localhost:5173"
-      }
+      const response = await axios.post("/user/login", { email, password });
+      updateUser(response.data.newUser); // Update user state on successful login
+      navigate(response.data.newUser.role === "admin" || response.data.newUser.role === "employee" ? '/dashboard' : '/');
     } catch (err) {
-      console.log(err.message)
+      setErrMsg(err.response ? err.response.data.message : 'Login failed');
     }
   };
   // console.log(user);

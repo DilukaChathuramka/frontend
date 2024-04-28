@@ -6,6 +6,7 @@ import { CiUser } from "react-icons/ci";
 import { IoCarSportOutline } from "react-icons/io5";
 import { LuPackage2 } from "react-icons/lu";
 import { FaRegMoneyBillAlt } from "react-icons/fa";
+import axios from "axios";
 
 function Dashboard({ children }) {
   const [style, setStyle] = useState(
@@ -34,6 +35,19 @@ function Dashboard({ children }) {
       setStyle("navbar-nav bg-gradient-primary sidebar sidebar-dark accordion");
     }
   };
+
+  const logout = async () => {
+    try {
+      const logOut = await axios.get("/user/logout");
+      if (logOut.data) {
+        // console.log(logOut.data.message);
+        window.location.href = "http://localhost:5173/";
+      }
+    } catch (err) {
+      console.log(err.message);
+    }
+  };
+
 
   return (
     <div>
@@ -144,15 +158,19 @@ function Dashboard({ children }) {
                 className="collapse"
                 aria-labelledby="headingPages"
                 data-parent="#accordionSidebar"
-              >
-                <div className="bg-white py-2 collapse-inner rounded">
-              <a className="collapse-item" href="/allvehicle">
+              ><div className="bg-white py-2 collapse-inner rounded">
+              <a className="collapse-item" href="/alldriver">
                 Driver Managment
               </a>
             </div>
                 <div className="bg-white py-2 collapse-inner rounded">
                   <a className="collapse-item" href="/driver-registration">
                     Add driver
+                  </a>
+                </div>
+                <div className="bg-white py-2 collapse-inner rounded">
+                  <a className="collapse-item" href="/leave">
+                    Leaves managment
                   </a>
                 </div>
               </div>
@@ -177,10 +195,17 @@ function Dashboard({ children }) {
                 data-parent="#accordionSidebar"
               >
                 <div className="bg-white py-2 collapse-inner rounded">
+                  <a className="collapse-item" href="/vehicleAll">
+                   Vehicle Management
+                  </a>
+                </div>
+                <div className="bg-white py-2 collapse-inner rounded">
                   <a className="collapse-item" href="/vehicle-add">
                    Add vehile
                   </a>
                 </div>
+
+                
               </div>
             </li>
             <li className="nav-item">
@@ -209,55 +234,62 @@ function Dashboard({ children }) {
               </div>
             </li>
             <li className="nav-item">
-
               <a
-
                 className="nav-link collapsed"
-
                 href="#"
-
                 data-toggle="collapse"
-
                 data-target="#collapsepackage"
-
                 aria-expanded="true"
-
                 aria-controls="collapsePages"
-
               >
-
                 <LuPackage2 className="mx-2"/>
-
                 <span>Packages</span>
-
               </a>
-
               <div
-
                 id="collapsepackage"
-
                 className="collapse"
-
                 aria-labelledby="headingPages"
-
                 data-parent="#accordionSidebar"
-
               >
-
                 <div className="bg-white py-2 collapse-inner rounded">
-
-                  <a className="collapse-item" href="/dashPackage">
-
-                   Add package
-
+                  <a className="collapse-item" href="/allPackage">
+                   Package Managment
                   </a>
-
                 </div>
-
+                <div className="bg-white py-2 collapse-inner rounded">
+                  <a className="collapse-item" href="/dashPackage">
+                   Add package
+                  </a>
+                </div>
+              
               </div>
-
             </li>
-
+            <li className="nav-item">
+              <a
+                className="nav-link collapsed"
+                href="#"
+                data-toggle="collapse"
+                data-target="#collapsecustompack"
+                aria-expanded="true"
+                aria-controls="collapsePages"
+              >
+                <FaRegMoneyBillAlt className="mx-2"/>
+                <span>CustomPack</span>
+              </a>
+              <div
+                id="collapsecustompack"
+                className="collapse"
+                aria-labelledby="headingPages"
+                data-parent="#accordionSidebar"
+              >
+                <div className="bg-white py-2 collapse-inner rounded">
+                  <a className="collapse-item" href="/allDetails">
+                   All Custompackage
+                  </a>
+                </div>
+              </div>
+             
+            </li>
             <li className="nav-item">
               <a
                 className="nav-link collapsed"
@@ -283,7 +315,6 @@ function Dashboard({ children }) {
                 </div>
               </div>
             </li>
-            
           </ul>
           <div id="content-wrapper" className="d-flex flex-column">
             <div id="content">
@@ -325,6 +356,7 @@ function Dashboard({ children }) {
                         href="#"
                         data-toggle="modal"
                         data-target="#logoutModal"
+                        onClick={logout}
                       >
                         <i className="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                         Logout
