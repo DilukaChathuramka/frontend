@@ -1,18 +1,25 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { BallTriangle } from "react-loader-spinner";
-
+import { RiMoneyDollarCircleLine } from "react-icons/ri";
+import { FaTasks } from "react-icons/fa";
 function ShowFeeback() {
   const [feedback, setFeedback] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [msg, setMsg] = useState("");
   const [error, setError] = useState(null);
-  
-  const fetchFeedback = async () => {
+  const  [driverFeedbackCount,setDriverFeedbackCount]=useState(0);
+  const [vehicleFeedbackCount,setVehicleFeedbackCount]=useState(0);
+  const [pending,setPending]=useState(0);
+    const fetchFeedback = async () => {
     setIsLoading(true);
     try {
       const response = await axios.get("/feedback/getfeedback");
       setFeedback(response.data);
+      setDriverFeedbackCount(response.data.filter(item => item.driverfeed).length);
+      setVehicleFeedbackCount(response.data.filter(item => item.vehiclefeed).length);
+      setPending(response.data.filter(feedback => feedback.status === "pending").length);
+
     } catch (err) {
       setError(err);
     } finally {
@@ -24,8 +31,8 @@ function ShowFeeback() {
   useEffect(() => {
     fetchFeedback();
   }, []); 
-
- 
+  
+  const totalFeedbackCount = feedback.length;
   const handelpending = async (id) => {
     try {
       const response = await axios.put(`/feedback/acceptfeedback/${id}`);
@@ -45,7 +52,7 @@ function ShowFeeback() {
       console.error(err);
     }
   }
-
+console.log(driverFeedbackCount)
   if (isLoading) {
     return (
       <div className="center-spinner">
@@ -71,6 +78,84 @@ function ShowFeeback() {
       ) : error ? (
         <p className="alert alert-danger">{error}</p>
       ) : null}
+       <div className="row">
+    {/*  <!-- Earnings (Monthly) Card Example --> */}
+    <div className="col-xl-3 col-md-6 mb-4">
+      <div className="card border-left-primary shadow h-100 py-2">
+        <div className="card-body">
+          <div className="row no-gutters align-items-center">
+            <div className="col mr-2">
+              <div className="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                Total Feedbacks
+              </div>
+              <div className="h5 mb-0 font-weight-bold text-gray-800">
+               {totalFeedbackCount}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {/*  <!-- Earnings (Monthly) Card Example --> */}
+    <div className="col-xl-3 col-md-6 mb-4">
+      <div className="card border-left-success shadow h-100 py-2">
+        <div className="card-body">
+          <div className="row no-gutters align-items-center">
+            <div className="col mr-2">
+              <div className="text-xs font-weight-bold text-success text-uppercase mb-1">
+               Car Feedback(Total)
+              </div>
+              <div className="h5 mb-0 font-weight-bold text-gray-800">
+                {vehicleFeedbackCount}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {/*  <!-- Earnings (Monthly) Card Example --> */}
+    <div className="col-xl-3 col-md-6 mb-4">
+      <div className="card border-left-info shadow h-100 py-2">
+        <div className="card-body">
+          <div className="row no-gutters align-items-center">
+            <div className="col mr-2">
+              <div className="text-xs font-weight-bold text-info text-uppercase mb-1">
+               Driver FeedBack(Total)
+              </div>
+              <div className="row no-gutters align-items-center">
+                <div className="col-auto">
+                  <div className="h5 mb-0 mr-3 font-weight-bold text-gray-800">
+                    {driverFeedbackCount}
+                  </div>
+                </div>
+                
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {/*  <!-- Pending Requests Card Example --> */}
+    <div className="col-xl-3 col-md-6 mb-4">
+      <div className="card border-left-warning shadow h-100 py-2">
+        <div className="card-body">
+          <div className="row no-gutters align-items-center">
+            <div className="col mr-2">
+              <div className="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                Pending Requests
+              </div>
+              <div className="h5 mb-0 font-weight-bold text-gray-800">
+                {pending}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
       <table class="table table-striped">
         <thead>
           <tr>
@@ -87,20 +172,20 @@ function ShowFeeback() {
         {feedback &&
           feedback.map((feedback, index) => (
             <tbody>
-              <tr>
+              <tr key={index}>
                 <th scope="row">{index + 1}</th>
-                <td>{feedback.user && feedback.user.name}</td>
+                <td>{feedback.userfeed && feedback.userfeed.name}</td>
                 <td>
-                  {feedback.vehicle ? (
-                    feedback.vehicle.vehicleName
+                  {feedback.vehiclefeed ? (
+                    feedback.vehiclefeed.vehicleName
                   ) : (
                     <p>No feedback to vehicle</p>
                   )}
                 </td>
 
                 <td>
-                  {feedback.driver ? (
-                    feedback.driver.name
+                  {feedback.driverfeed ? (
+                    feedback.driverfeed.name
                   ) : (
                     <p>No feedback to driver</p>
                   )}
@@ -110,22 +195,23 @@ function ShowFeeback() {
                 <td>
                   {feedback.status === "pending" ? (
                     <button
-                      className="btn"
+                      className="btn btn-success"
                       onClick={() => handelpending(feedback._id)}
+                      style={{color:'black'}}
                     >
                       pending
                     </button>
                   ) : (
                     <button
                       className="btn"
-                      style={{ backgroundColor: "green" }}
+                      style={{ backgroundColor: "green",color:'black' }}
                     >
                       accepted
                     </button>
                   )}
                 </td>
                 <td>
-                  <button className="btn" onClick={() => handeldelete(feedback._id)}>Delete</button>
+                  <button className="btn btn-danger" onClick={() => handeldelete(feedback._id)}>Delete</button>
                 </td>
               </tr>
             </tbody>

@@ -164,7 +164,7 @@ function FeedbackFrom() {
                         id="vehicle"
                         name="vehicle"
                         required
-                        onChange={(e)=>setfeedbackoptionDriver(e.target.value)}
+                        onChange={(e)=>setfeedbackoptionCar(e.target.value)}
                         >
                         <option value="">Select Vehicle</option>
                         {vehicles.map((vehicle) => (
@@ -183,7 +183,7 @@ function FeedbackFrom() {
                         id="driver"
                         name="driver"
                         required
-                        onChange={(e)=>setfeedbackoptionCar(e.target.value)}
+                        onChange={(e)=>setfeedbackoptionDriver(e.target.value)}
                         >
                         <option value="">Select Driver</option>
                         {drivers.map((driver) => (
