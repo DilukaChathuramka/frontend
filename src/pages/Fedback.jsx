@@ -52,12 +52,14 @@ console.log(feedback)
     <section class="bg-light py-3 py-md-5">
       <div class="container">
         <div className="d-flex mx-2">
-          <button className="btn" onClick={handleDriverFeedback}>
+          <button className="btn" 
+          style={{ backgroundColor: "green",color:"black" }}
+           onClick={handleDriverFeedback}>
             Feedback to Driver
           </button>
           <button
             className="btn mx-3"
-            style={{ backgroundColor: "green" }}
+            style={{ backgroundColor: "green",color:"black" }}
             onClick={handleCarFeedback}
           >
             Feedback to Car
