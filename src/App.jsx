@@ -1,4 +1,4 @@
-import React from "react";
+
 import { Routes, Route } from "react-router-dom";
 import Layout from "./pages/Layout.jsx";
 import Home from "./pages/Home";
@@ -12,50 +12,207 @@ import Login from "./pages/Login";
 import Signin from "./pages/Signin";
 import axios from "axios";
 import Verify from "./pages/Verify";
+import { UserProvider } from "./context/UserContext";
+import Addvehicle from "./pages/dashboard/vehicle/Addvehicle.jsx";
+import DriverManagement from "./pages/dashboard/driver/DriverManagement";
+import DriverRegistration from "./pages/dashboard/driver/DriverRegistration";
+import PackageAddForm from "./pages/dashboard/packages/PackageAddForm";
+import Packages from "./pages/Packages";
+import Payment from "./pages/Payment";
+import Allpayment from "./pages/dashboard/payment/Allpayment";
+import PayementDetails from "./pages/dashboard/payment/PayementDetails";
+import Fedback from "./pages/Fedback";
+import FeedbackFrom from "./pages/FeedbackFrom";
+import ShowFeeback from "./pages/dashboard/feedback/ShowFeeback";
+import CustommizePackage from "./pages/CustommizePackage";
+import Addemp from "./pages/dashboard/employee/Addemp";
+import Empmanage from "./pages/dashboard/employee/Empmanage";
 axios.defaults.baseURL = "http://localhost:5000";
 axios.defaults.withCredentials = true;
 
 function App() {
   return (
     <>
-      
+<UserProvider>
       <Routes>
-        <Route path="/" element={<><Header/><Home /><Feature /><GetStart /><Footer/></>} />
-         <Route
-            path="/dashboard"
+        <Route path="/" element={<><Header /><Home /><Feature /><GetStart /><Footer /></>} />
+        <Route
+          path="/dashboard"
+          element={
+            <Dashboard>
+              <Cards />
+            </Dashboard>
+          }
+        />
+        <Route
+          path="/login"
+          element={
+            <Layout>
+              <Login />
+            </Layout>
+          }
+        />
+        <Route
+          path="/signin"
+          element={
+            <Layout>
+              <Signin />
+            </Layout>
+          }
+        />
+        <Route
+          path="/user/:id/verify/:token"
+          element={
+            <Layout>
+              <Verify />
+            </Layout>
+          }
+        />
+
+        <Route
+          path="/vehicle-add"
+          element={
+            <Dashboard>
+              <Addvehicle />
+            </Dashboard>
+          }
+        />
+        <Route
+            path="/driver-registration"
             element={
               <Dashboard>
-                <Cards />
+                <DriverRegistration />
               </Dashboard>
             }
           />
+           <Route
+            path="/payment"
+            element={
+              <Layout>
+                <Payment />
+              </Layout>
+            }
+          />
+           <Route
+            path="/allpay"
+            element={
+              <Dashboard>
+                <Allpayment/>
+              </Dashboard>
+            }
+          />
+           <Route
+            path="/payment-details/:id"
+            element={
+              <Dashboard>
+                <PayementDetails/>
+              </Dashboard>
+            }
+          />
+          <Route
+            path="/allvehicle"
+            element={
+              <Dashboard>
+                <DriverManagement/>
+              </Dashboard>
+            }
+          />
+           <Route
+            path="/cutomizepackages"
+            element={
+              <Layout>
+                <CustommizePackage />
+              </Layout>
+            }
+          />
+          <Route
+
+path="/packages"
+
+element={
+
+  <Layout>
+
+    <Packages />
+
+  </Layout>
+
+}
+
+/>
 <Route
-            path="/login"
+
+            path="/dashPackage"
+
+            element={
+
+              <Dashboard>
+
+                <PackageAddForm/>
+
+              </Dashboard>
+
+            }
+
+          />
+
+<Route
+            path="/feedback"
             element={
               <Layout>
-                <Login />
+                <Fedback />
               </Layout>
             }
           />
-          <Route
-            path="/signin"
+
+<Route
+            path="/feedback-form"
             element={
               <Layout>
-                <Signin />
+                <FeedbackFrom />
               </Layout>
             }
           />
-          <Route
-            path="/user/:id/verify/:token"
+
+
+<Route
+            path="/getfeedback"
             element={
-              <Layout>
-                <Verify />
-              </Layout>
+              <Dashboard>
+                <ShowFeeback/>
+              </Dashboard>
             }
           />
+
+<Route
+            path="/employeeAdd"
+            element={
+              <Dashboard>
+                <Addemp/>
+              </Dashboard>
+            }
+          />
+ 
+            <Route
+            path="/empManage"
+            element={
+              <Dashboard>
+                <Empmanage/>
+              </Dashboard>
+            }
+          />
+           <Route
+            path="/empEdit-edit/:id"
+            element={
+              <Dashboard>
+                 <Addemp/>
+              </Dashboard>
+            }
+          />
+
       </Routes>
 
-   
+      </UserProvider>
     </>
   );
 }

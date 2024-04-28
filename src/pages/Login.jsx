@@ -23,26 +23,9 @@ function Login() {
     e.preventDefault();
     const { email, password } = data;
     try {
-<<<<<<< Updated upstream
-      const response = await axios.post("/user/login", {
-        email,
-        password,
-      });
-      const newUser = response.data.newUser;
-      const userRole = newUser.role;
-      // updateUser(newUser);
-      if (userRole === "admin") {
-        // window.location.href="https
-      } else {
-        // console.log("user")
-        navigate('/');
-        // window.location.href="http://localhost:5173"
-      }
-=======
       const response = await axios.post("/user/login", { email, password });
       updateUser(response.data.newUser); // Update user state on successful login
       navigate(response.data.newUser.role === "admin" || response.data.newUser.role === "employee" ? '/dashboard' : '/');
->>>>>>> Stashed changes
     } catch (err) {
       setErrMsg(err.response ? err.response.data.message : 'Login failed');
     }
