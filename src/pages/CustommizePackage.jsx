@@ -17,6 +17,9 @@ function CustommizePackage() {
   const navigate = useNavigate();
 
   const { user } = useUser();
+
+
+  
   useEffect(() => {
     const fetchVehicles = async () => {
       try {
@@ -47,13 +50,13 @@ function CustommizePackage() {
   }, [selectedOption, distance, vehicle, duration]);
   const calculateTotal = () => {
     if (selectedOption === "Non-AC" && distance && vehicle === "Car") {
-      return Number(distance) * 100 +  500;
+      return Number(distance) * 100 +  Number(duration)* 500;
     } else if (selectedOption === "AC" && distance && vehicle === "Car") {
-      return Number(distance) * 100 +  500 + 2000;
+      return Number(distance) * 100 + Number(duration)* 500 + 2000;
     } else if (selectedOption === "Non-AC" && distance && vehicle === "Van") {
-      return Number(distance) * 150 +  500;
+      return Number(distance) * 150 +  Number(duration)* 500;
     } else if (selectedOption === "AC" && distance && vehicle === "Van") {
-      return Number(distance) * 150 + 500 + 3000;
+      return Number(distance) * 150 +  Number(duration)* 500 + 3000;
     }
     return 0; // Or any other default calculation for other cases
   };
@@ -96,7 +99,9 @@ function CustommizePackage() {
         const customizeid = response.data.addcustom;
          
 
-        const queryParams = new URLSearchParams({customizeid,price:total}).toString();
+        // const queryParams = new URLSearchParams({customizeid,price:total}).toString();
+        const queryParams = new URLSearchParams({customizeid,price:total,packageType:"customize" });
+
         navigate(`/payment?${queryParams}`);
       }
     } catch (error) {

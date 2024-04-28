@@ -13,6 +13,7 @@ import Signin from "./pages/Signin";
 import axios from "axios";
 import Verify from "./pages/Verify";
 import { UserProvider } from "./context/UserContext";
+import AllCustomize from "./pages/dashboard/customizePAck/AllCustomize";
 import Addvehicle from "./pages/dashboard/vehicle/Addvehicle.jsx";
 import DriverManagement from "./pages/dashboard/driver/DriverManagement";
 import DriverRegistration from "./pages/dashboard/driver/DriverRegistration";
@@ -28,6 +29,8 @@ import CustommizePackage from "./pages/CustommizePackage";
 import Addemp from "./pages/dashboard/employee/Addemp";
 import Empmanage from "./pages/dashboard/employee/Empmanage";
 import UserDetails from "./pages/dashboard/user/UserDetails.jsx";
+import UserProfile from "./components/UserProfile";
+import ProtectRouter from "./context/ProtectRoter";
 axios.defaults.baseURL = "http://localhost:5000";
 axios.defaults.withCredentials = true;
 
@@ -53,6 +56,14 @@ function App() {
             </Layout>
           }
         />
+           <Route
+            path="/allDetails"
+            element={
+              <Dashboard>
+                <AllCustomize />
+              </Dashboard>
+            }
+          />
         <Route
           path="/signin"
           element={
@@ -69,6 +80,14 @@ function App() {
             </Layout>
           }
         />
+          <Route
+            path="/user-profile"
+            element={
+              <Layout>
+                <UserProfile />
+              </Layout>
+            }
+          />
 
         <Route
           path="/vehicle-add"
@@ -121,9 +140,11 @@ function App() {
            <Route
             path="/cutomizepackages"
             element={
-              <Layout>
-                <CustommizePackage />
-              </Layout>
+              <ProtectRouter>
+                <Layout>
+                  <CustommizePackage />
+                </Layout>
+              </ProtectRouter>
             }
           />
           <Route
