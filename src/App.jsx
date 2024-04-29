@@ -33,6 +33,8 @@ import Empmanage from "./pages/dashboard/employee/Empmanage";
 import UserDetails from "./pages/dashboard/user/UserDetails.jsx";
 import UserProfile from "./components/UserProfile";
 import ProtectRouter from "./context/ProtectRoter";
+import Leavemanagment from "./pages/dashboard/driver/Leavemanagment";
+import Leave from "./components/Leave";
 axios.defaults.baseURL = "http://localhost:5000";
 axios.defaults.withCredentials = true;
 
@@ -243,6 +245,39 @@ element={
             }
           />
 
+<Route
+            path="/user-leave"
+            element={
+              <Layout>
+                <Leave/>
+              </Layout>
+            }
+          />
+
+<Route
+            path="/leave"
+            element={
+              <Dashboard>
+                <Leavemanagment/>
+              </Dashboard>
+            }
+          />
+          <Route
+            path="/driver-edit/:id"
+            element={
+              <Dashboard>
+                <DriverRegistration />
+              </Dashboard>
+            }
+          />
+          <Route
+            path="/alldriver"
+            element={
+              <Dashboard>
+                <DriverManagement />
+              </Dashboard>
+            }
+          />
 
 <Route
             path="/getfeedback"

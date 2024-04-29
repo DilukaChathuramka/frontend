@@ -1,11 +1,14 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
-
+import { useParams } from "react-router-dom";
+import { BallTriangle } from "react-loader-spinner";
 function DriverRegistration() {
   const [message, setMessage] = useState("");
   const [errMsg, setErrMsg] = useState("");
   const [isValidEmail, setIsValidEmail] = useState(true);
   const [isValidPhone, setIsValidPhone] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
+  const { id } = useParams();
 
   const validateEmail = (email) => {
     const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
@@ -29,41 +32,96 @@ function DriverRegistration() {
     name: "",
     email: "",
     phoneNo: "",
-    license:"",
-    address:""
+    license: "",
+    address: "",
   });
+
+  if (id) {
+    useEffect(() => {
+      const fetchdriver = async () => {
+        try {
+          const response = await axios.get(`/driver/getDriver/${id}`);
+          SetData(response.data);
+          setIsLoading(true);
+        } catch (err) {
+          setErrMsg(err);
+          setIsLoading(false);
+        }
+      };
+      fetchdriver();
+    }, []);
+  }
 
   const driverRegistration = async (e) => {
     e.preventDefault();
 
-    const { name, email, phoneNo,license,address} = data;
+    const { name, email, phoneNo, license, address } = data;
 
     if (isValidEmail || isValidPhone) {
-      try {
-        const response = await axios.post("/driver/addDriver", {
-          name,
-          email,
-          phoneNo,
-          license,
-          address,
-        });
-        if (response.data.message) {
-          setMessage(response.data.message);
-          SetData({
-            name: "",
-            email: "",
-            phoneNo: "",
-            license:"",
-            address:""
+      if (id) {
+        try {
+          const response = await axios.patch(`/driver/editDriver/${id}`, {
+            name,
+            email,
+            phoneNo,
+            license,
+            address,
           });
+          if (response.data.message) {
+            setMessage(response.data.message);
+            SetData({
+              name: "",
+              email: "",
+              phoneNo: "",
+              license:"",
+              address:""
+            });
+          }
+        } catch (error) {
+          setErrMsg(error.message);
         }
-      } catch (error) {
-        setErrMsg(error.message);
+      } else {
+        try {
+          const response = await axios.post("/driver/addDriver", {
+            name,
+            email,
+            phoneNo,
+            license,
+            address,
+          });
+          if (response.data.message) {
+            setMessage(response.data.message);
+            SetData({
+              name: "",
+              email: "",
+              phoneNo: "",
+              license: "",
+              address: "",
+            });
+          }
+        } catch (error) {
+          setErrMsg(error.message);
+        }
       }
     } else {
       setErrMsg("Valid email or phone number required");
     }
   };
+
+  if (!isLoading) {
+    return (
+      <div className="center-spinner">
+        <BallTriangle
+          height={100}
+          width={100}
+          radius={5}
+          color="#4fa94d"
+          ariaLabel="ball-triangle-loading"
+          visible={true}
+        />
+      </div>
+    );
+  }
   return (
     <div className="container">
       <div className="row d-flex justify-content-center">
@@ -83,6 +141,7 @@ function DriverRegistration() {
                 type="text"
                 class="form-control"
                 id="inputEmail4"
+                value={data.name}
                 onChange={(e) => SetData({ ...data, name: e.target.value })}
               />
             </div>
@@ -94,6 +153,7 @@ function DriverRegistration() {
                 type="text"
                 class="form-control"
                 id="phoneno"
+                value={data.phoneNo}
                 onChange={(e) => {
                   SetData({ ...data, phoneNo: e.target.value });
                   validatePhone(e.target.value);
@@ -108,6 +168,7 @@ function DriverRegistration() {
                 type="email"
                 class="form-control"
                 id="inputAddress"
+                value={data.email}
                 onChange={(e) => {
                   SetData({ ...data, email: e.target.value });
                   validateEmail(e.target.value);
@@ -122,9 +183,9 @@ function DriverRegistration() {
                 type="text"
                 class="form-control"
                 id="inputnn"
+                value={data.license}
                 onChange={(e) => {
                   SetData({ ...data, license: e.target.value });
-                 
                 }}
               />
             </div>
@@ -136,13 +197,12 @@ function DriverRegistration() {
                 type="text"
                 class="form-control"
                 id="inputAddress"
+                value={data.address}
                 onChange={(e) => {
                   SetData({ ...data, address: e.target.value });
-                 
                 }}
               />
             </div>
-        
 
             <div class="col-12 d-flex justify-content-center">
               <button
@@ -150,7 +210,8 @@ function DriverRegistration() {
                 class="btn btn-primary"
                 style={{ width: "250px", height: "50px" }}
               >
-                Register
+                {" "}
+                {id ? "Update" : "Register"}
               </button>
             </div>
           </form>

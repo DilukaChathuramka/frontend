@@ -1,10 +1,12 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { BallTriangle } from "react-loader-spinner";
+import { useNavigate } from "react-router-dom";
 function DriverManagement() {
   const [users, setUsers] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -29,7 +31,11 @@ function DriverManagement() {
     } catch (err) {
       console.error(err);
     }
-  }
+  };
+
+  const hadleEdit = async (id) => {
+    navigate(`/driver-edit/${id}`);
+  };
 
   if (isLoading) {
     return (
@@ -60,27 +66,40 @@ function DriverManagement() {
             <th scope="col">Email</th>
             <th scope="col">Phone no</th>
             <th scope="col">license</th>
-            <th scope="col">status</th>
+            <th scope="col">Action</th>
             <th scope="col">Delete</th>
           </tr>
         </thead>
         <tbody>
-          {users.filter(user => user.isActive).map((user, index) => (
-            <tr key={user._id}>
-              <th scope="row">{index + 1}</th>
-              <td>{user.name}</td>
-              <td>{user.email}</td>
-              <td>{user.phoneNo}</td>
-              <td>{user.license}</td>
-              <td>
-                <button className="btn btn-primary">Active</button>
-              </td>
-              <td>
-                <button className="btn btn-danger" onClick={()=>handleDelete(user._id)}>Delete</button>
-              </td>
-            </tr>
-          ))}  
-           </tbody> 
+          {users
+            .filter((user) => user.isActive)
+            .map((user, index) => (
+              <tr key={user._id}>
+                <th scope="row">{index + 1}</th>
+                <td>{user.name}</td>
+                <td>{user.email}</td>
+                <td>{user.phoneNo}</td>
+                <td>{user.license}</td>
+                <td>
+                  <button
+                    className="btn btn-primary"
+                    onClick={() => hadleEdit(user._id)}
+                  >
+                    Edit
+                  </button>
+                </td>
+                <td>
+                  <button
+                    className="btn"
+                    onClick={() => handleDelete(user._id)}
+                    style={{ backgroundColor: "red" }}
+                  >
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            ))}
+        </tbody>
       </table>
     </div>
   );
