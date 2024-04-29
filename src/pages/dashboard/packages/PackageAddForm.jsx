@@ -1,12 +1,15 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { BallTriangle } from "react-loader-spinner";
+import { useParams } from "react-router-dom";
 
 function PackageAddForm() {
   const [message, setMessage] = useState("");
   const [errMsg, setErrMsg] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
   const [data, setData] = useState({
     vehicleType: "",
-    packageName: "",
+    packagename: "",
     Personcount: "",
     distance: "",
     duration: "",
@@ -14,6 +17,22 @@ function PackageAddForm() {
     price: "",
     condition: "",
   });
+  const { id } = useParams();
+  if (id) {
+    useEffect(() => {
+      const fetchdriver = async () => {
+        try {
+          const response = await axios.get(`/package/onegetpack/${id}`);
+          setData(response.data);
+          setIsLoading(true);
+        } catch (err) {
+          setErrMsg(err);
+          setIsLoading(false);
+        }
+      };
+      fetchdriver();
+    }, []);
+  }
 
   const vehicleHandler = async (e) => {
     e.preventDefault();
@@ -23,32 +42,95 @@ function PackageAddForm() {
       Personcount,
       distance,
       duration,
+      driver,
       price,
       condition,
     } = data;
-    try {
-      const response = await axios.post("/package/addpackage", {
-        vehicleType,
-        packagename,
-        Personcount,
-        distance,
-        duration,
-        price,
-        condition,
-      });
-      if (response.data.message) {
-        setMessage(response.data.message);
+    if (id) {
+      try {
+        const response = await axios.patch(`/package/editpack/${id}`, {
+          vehicleType,
+          packagename,
+          Personcount,
+          distance,
+          duration,
+          driver,
+          price,
+          condition,
+        });
+        if (response.data.message) {
+          setData({
+            vehicleType: "",
+            packagename: "",
+            Personcount: "",
+            distance: "",
+            duration: "",
+            driver: "",
+            price: "",
+            condition: "",
+          });
+          setMessage(response.data.message);
+        }
+      } catch (error) {
+        if (error.response && error.response.data) {
+          // Server-sent error message
+          setErrMsg(error.response.data.message || "Failed to add package.");
+        } else {
+          // Generic or network error
+          setErrMsg("An unexpected error occurred.");
+        }
       }
-    } catch (error) {
-      if (error.response && error.response.data) {
-        // Server-sent error message
-        setErrMsg(error.response.data.message || "Failed to add package.");
-      } else {
-        // Generic or network error
-        setErrMsg("An unexpected error occurred.");
+    } else {
+      try {
+        const response = await axios.post("/package/addpackage", {
+          vehicleType,
+          packagename,
+          Personcount,
+          distance,
+          duration,
+          driver,
+          price,
+          condition,
+        });
+        if (response.data.message) {
+          setData({
+            vehicleType: "",
+            packagename: "",
+            Personcount: "",
+            distance: "",
+            duration: "",
+            driver: "",
+            price: "",
+            condition: "",
+          });
+          setMessage(response.data.message);
+        }
+      } catch (error) {
+        if (error.response && error.response.data) {
+          // Server-sent error message
+          setErrMsg(error.response.data.message || "Failed to add package.");
+        } else {
+          // Generic or network error
+          setErrMsg("An unexpected error occurred.");
+        }
       }
     }
   };
+
+  if (!isLoading) {
+    return (
+      <div className="center-spinner">
+        <BallTriangle
+          height={100}
+          width={100}
+          radius={5}
+          color="#4fa94d"
+          ariaLabel="ball-triangle-loading"
+          visible={true}
+        />
+      </div>
+    );
+  }
   return (
     <div className="container">
       <div className="row d-flex justify-content-center">
@@ -104,6 +186,7 @@ function PackageAddForm() {
                 type="text"
                 class="form-control"
                 id="phoneno"
+                value={data.packagename}
                 onChange={(e) => {
                   setData({ ...data, packagename: e.target.value });
                 }}
@@ -117,6 +200,7 @@ function PackageAddForm() {
                 type="text"
                 class="form-control"
                 id="inputAddress"
+                value={data.Personcount}
                 onChange={(e) => {
                   setData({ ...data, Personcount: e.target.value });
                 }}
@@ -130,6 +214,7 @@ function PackageAddForm() {
                 type="text"
                 class="form-control"
                 id="inputnn"
+                value={data.distance}
                 onChange={(e) => {
                   setData({ ...data, distance: e.target.value });
                 }}
@@ -143,6 +228,7 @@ function PackageAddForm() {
                 type="text"
                 class="form-control"
                 id="inputAddress"
+                value={data.duration}
                 onChange={(e) => {
                   setData({ ...data, duration: e.target.value });
                 }}
@@ -156,6 +242,7 @@ function PackageAddForm() {
                 type="text"
                 class="form-control"
                 id="inputAddress"
+                value={data.price}
                 onChange={(e) => {
                   setData({ ...data, price: e.target.value });
                 }}
@@ -237,7 +324,7 @@ function PackageAddForm() {
                 class="btn btn-primary"
                 style={{ width: "250px", height: "50px" }}
               >
-                Add Package
+               {id ? "Update" : "Add package"}
               </button>
             </div>
           </form>

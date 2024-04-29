@@ -4,6 +4,8 @@ import Layout from "./pages/Layout.jsx";
 import Home from "./pages/Home";
 import Header from "./components/Header";
 import Feature from "./components/Feature";
+import SelectPackage from "./pages/SelectPackage";
+import Packagemanagment from "./pages/dashboard/packages/Packagemanagment";
 import GetStart from "./components/GetStart";
 import Footer from "./components/Footer";
 import Dashboard from "./pages/dashboard/Dashboard.jsx";
@@ -149,7 +151,22 @@ function App() {
           />
           <Route
 
-path="/packages"
+path="/selectpackage"
+
+element={
+
+  <Layout>
+
+    <SelectPackage />
+
+  </Layout>
+
+}
+
+/>
+          <Route
+
+path="/packages/:name"
 
 element={
 
@@ -162,6 +179,36 @@ element={
 }
 
 />
+<Route
+
+            path="/editpack/:id"
+
+            element={
+
+              <Dashboard>
+
+                <PackageAddForm/>
+
+              </Dashboard>
+
+            }
+
+          />
+<Route
+
+            path="/allPackage"
+
+            element={
+
+              <Dashboard>
+
+                <Packagemanagment/>
+
+              </Dashboard>
+
+            }
+
+          />
 <Route
 
             path="/dashPackage"
