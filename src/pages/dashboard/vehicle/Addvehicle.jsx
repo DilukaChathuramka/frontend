@@ -1,9 +1,11 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 
 function Addvehicle() {
   const [message, setMessage] = useState("");
   const [errMsg, setErrMsg] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
   const [vehicledata, SetVehicleData] = useState({
     vehicleName: "",
     vehicleNo: "",
@@ -13,6 +15,22 @@ function Addvehicle() {
     seatCapacity: "",
     image: null,
   });
+  const {id}=useParams();
+  if (id) {
+    useEffect(() => {
+      const fetchvhicle = async () => {
+        try {
+          const response = await axios.get(`/vehicle/onevehicle/${id}`);
+          SetVehicleData(response.data);
+          setIsLoading(true);
+        } catch (err) {
+          setErrMsg(err);
+          setIsLoading(false);
+        }
+      };
+      fetchvhicle();
+    }, []);
+  }
   const vehicleAdd = async (e) => {
     e.preventDefault();
 
@@ -36,20 +54,67 @@ function Addvehicle() {
     if (vehicledata.image) {
       formData.append("image", vehicledata.image);
     }
-    try {
-      const response = await axios.post("/vehicle/addvehicle", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
-      if (response.data.message) {
-        setMessage(response.data.message);
+    if(id){
+      try {
+        const response = await axios.patch(`/vehicle/vehicleupdate/${id}`, formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        });
+        if (response.data.message) {
+          SetVehicleData({
+            vehicleName: "",
+            vehicleNo: "",
+            initialKM: "",
+            condition: "",
+            vehicletype: "",
+            seatCapacity: "",
+            image: null,
+          });
+          setMessage(response.data.message);
+        }
+      } catch (error) {
+        setErrMsg("Fail Add");
       }
-    } catch (error) {
-      setErrMsg("Fail Add");
+    }else{
+
+      try {
+        const response = await axios.post("/vehicle/addvehicle", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        });
+        if (response.data.message) {
+          SetVehicleData({
+            vehicleName: "",
+            vehicleNo: "",
+            initialKM: "",
+            condition: "",
+            vehicletype: "",
+            seatCapacity: "",
+            image: null,
+          });
+          setMessage(response.data.message);
+        }
+      } catch (error) {
+        setErrMsg("Fail Add");
+      }
     }
   };
-
+  if (!isLoading) {
+    return (
+      <div className="center-spinner">
+        <BallTriangle
+          height={100}
+          width={100}
+          radius={5}
+          color="#4fa94d"
+          ariaLabel="ball-triangle-loading"
+          visible={true}
+        />
+      </div>
+    );
+  }
   return (
     <div className="container">
       <div className="row d-flex justify-content-center">
@@ -69,6 +134,8 @@ function Addvehicle() {
                 type="text"
                 class="form-control"
                 id="inputEmail4"
+                value={vehicledata.vehicleName
+                  }
                 onChange={(e) =>
                   SetVehicleData({
                     ...vehicledata,
@@ -85,6 +152,7 @@ function Addvehicle() {
                 type="text"
                 class="form-control"
                 id="phoneno"
+                value={vehicledata.vehicleNo                }
                 onChange={(e) =>
                   SetVehicleData({ ...vehicledata, vehicleNo: e.target.value })
                 }
@@ -98,6 +166,7 @@ function Addvehicle() {
                 type="text"
                 class="form-control"
                 id="inputAddress"
+                value={vehicledata.initialKM}
                 onChange={(e) =>
                   SetVehicleData({ ...vehicledata, initialKM: e.target.value })
                 }
@@ -196,6 +265,7 @@ function Addvehicle() {
                 type="text"
                 class="form-control"
                 id="inputAddress"
+                value={vehicledata.seatCapacity}
                 onChange={(e) =>
                   SetVehicleData({
                     ...vehicledata,

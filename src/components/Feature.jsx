@@ -1,10 +1,11 @@
 import axios from "axios";
 import React, { useState } from "react";
 import { useEffect } from "react";
+import { Link } from "react-router-dom";
 
 function Feature() {
   const [vehicles, setVehicles] = useState([]);
-
+  const [filter, setFilter] = useState("all");
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -19,23 +20,32 @@ function Feature() {
     fetchData();
   }, []);
 
-
+  const filteredVehicles = () => {
+    if (filter === "all") {
+      return vehicles;
+    } else {
+      return vehicles.filter((vehicle) => vehicle.vehicletype === filter);
+    }
+  };
   return (
     <div>
       <section class="section featured-car" id="featured-car">
         <div class="container">
+          {" "}
           <div class="title-wrapper">
             <h2 class="h2 section-title">Featured cars</h2>
-
-            <a href="#" class="featured-car-link">
-              <span>View more</span>
-
-              <ion-icon name="arrow-forward-outline"></ion-icon>
-            </a>
           </div>
-
+          <div className="d-flex justify-content-end mx-2">
+            <button className="btn btn-primary mx-2" onClick={() => setFilter("all")}>All</button>{" "}
+            {/* Button to show all vehicles */}
+            <button className="btn btn-primary mx-2" onClick={() => setFilter("car")}>Car</button>{" "}
+            {/* Button to filter by car */}
+            <button className="btn btn-primary mx-2" onClick={() => setFilter("van")}>Van</button>{" "}
+            {/* Button to filter by van */}
+          </div>
+          {/* Button to filter by van */}
           <ul class="featured-car-list">
-            {vehicles.map((vehicle) => (
+            {filteredVehicles().map((vehicle) => (
               <li key={vehicle._id}>
                 <div className="featured-car-card">
                   <figure className="card-banner">
@@ -72,34 +82,22 @@ function Feature() {
                       {/* Additional vehicle details can be added here */}
                     </div>
 
-                    <ul className="card-list">
-                      {/* Dynamically add list items based on available data */}
-                      <li className="card-list-item">
-                        <ion-icon name="people-outline"></ion-icon>
-                        <span className="card-item-text">
                           {vehicle.seatCapacity} People
-                        </span>
-                          
-                      </li>
-
-                      {/* Other list items... */}
-                    </ul>
-
+                
                     <div className="card-price-wrapper">
-                      {/* Pricing and other actions */}
-                      <p className="card-price">
-                        <strong>$490</strong> / month{" "}
-                        {/* Replace with dynamic pricing */}
-                      </p>
-
+                    
                       <button
                         className="btn fav-btn"
                         aria-label="Add to favourite list"
                       >
-                        <ion-icon name="heart-outline">{vehicle.condition}</ion-icon>
+                        <ion-icon name="heart-outline">
+                          {vehicle.condition}
+                        </ion-icon>
                       </button>
+                        <Link to={'/selectpackage'}>
 
-                      <button className="btn">Rent now</button>
+                      <button className="btn btn-primary">Rent now</button>
+                        </Link>
                     </div>
                   </div>
                 </div>
