@@ -6,10 +6,10 @@ function Home() {
         <div class="container">
 
           <div class="hero-content">
-            <h2 class="h1 hero-title">The easy way to takeover a lease</h2>
+            <h2 class="h1 hero-title">Your Gateway to Hassle-Free Vehicle Rentals</h2>
 
             <p class="hero-text">
-              Live in New York, New Jerset and Connecticut!
+            Unlock Your Journey with DRIVE HIVE Smart Vehicle Rentals
             </p>
           </div>
 
