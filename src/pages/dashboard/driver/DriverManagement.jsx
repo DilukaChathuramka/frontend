@@ -7,6 +7,7 @@ function DriverManagement() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
+  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -22,6 +23,18 @@ function DriverManagement() {
 
     fetchUsers();
   }, []);
+
+  
+  const handleSearchInputChange = (event) => {
+    setSearchQuery(event.target.value);
+  };
+
+  const filteredUsers = users.filter((user) =>
+    user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    user.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    user.phoneNo.toString().includes(searchQuery)
+  );
+
 
   const handleDelete = async (id) => {
     try {
@@ -58,6 +71,15 @@ function DriverManagement() {
 
   return (
     <div>
+        <div className="search-container col-5 mb-4">
+        <input
+          type="text"
+          placeholder="Search by name, email, or phone number"
+          style={{border:'3px solid',borderRadius:'15px',fontSize:'20px'}}
+          value={searchQuery}
+          onChange={handleSearchInputChange}
+        />
+      </div>
       <table class="table table-striped">
         <thead>
           <tr>
@@ -71,7 +93,7 @@ function DriverManagement() {
           </tr>
         </thead>
         <tbody>
-          {users
+          {filteredUsers
             .filter((user) => user.isActive)
             .map((user, index) => (
               <tr key={user._id}>

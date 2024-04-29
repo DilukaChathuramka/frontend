@@ -36,30 +36,29 @@ function PayementDetails() {
             <p>ID: {payment._id}</p>
             <p>User ID: {payment.user}</p>
             <p>Package Name: {payment.packageName.packagename}</p>
-            <p>Package Type: {payment.packageType}</p>
+            {/* <p>Package Type: {payment.packageType}</p> */}
             <p>Payment Type: {payment.payementType}</p>
             <p>Total: {payment.total}</p>
             
             <h3>Bill Details</h3>
             {payment.billDetails.map((bill, index) => (
                 <div key={bill._id}>
-                    <p>Name: {bill.name}</p>
-                    <p>Address: {bill.address}, {bill.town}</p>
+                    <p>Address: {bill.address}</p>
                     <p>Phone Number: {bill.phoneNo}</p>
-                    <p>Email: {bill.email}</p>
+                   
                 </div>
             ))}
 
             <h3>Card Details</h3>
             {payment.cardDetails.map((card, index) => (
-                <div key={card._id}>
-                    <p>Card Number: {card.cardNumber}</p>
-                    <p>Expire Month: {card.expireMonth}</p>
-                    <p>Expire Date: {card.expireDate}</p>
-                    <p>CVV: {card.cvv}</p>
-                </div>
-            ))}
-        
+    <div key={index}>
+        {card && card.cardNumber ? (
+            <p>Card Number: {"x".repeat(card.cardNumber.length - 4) + card.cardNumber.substring(card.cardNumber.length - 4)}</p>
+        ) : (
+            <p>Card Details Unavailable</p>
+        )}
+    </div>
+))}
         </div>
       </div>
             

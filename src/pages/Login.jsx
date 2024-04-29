@@ -25,6 +25,9 @@ function Login() {
     try {
       const response = await axios.post("/user/login", { email, password });
       updateUser(response.data.newUser); // Update user state on successful login
+      await axios.post("/emp/userlog",{
+        userId:response.data.newUser._id
+      }) // Update user state on successful login
       navigate(response.data.newUser.role === "admin" || response.data.newUser.role === "employee" ? '/dashboard' : '/');
     } catch (err) {
       setErrMsg(err.response ? err.response.data.message : 'Login failed');

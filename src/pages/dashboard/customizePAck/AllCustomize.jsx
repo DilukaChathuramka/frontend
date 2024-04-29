@@ -8,6 +8,8 @@ function AllCustomize() {
   const [pack, setPack] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [searchQuery, setSearchQuery] = useState("");
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -31,6 +33,16 @@ function AllCustomize() {
       console.error(err);
     }
   };
+  const handleSearchInputChange = (event) => {
+    setSearchQuery(event.target.value);
+  };
+
+  const filteredUsers = (pack || []).filter((data) =>
+  data.user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+  data.user.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
+  data.user.phoneNo.toString().includes(searchQuery)
+);
+
 
   const downloadPdfDocument = () => {
     const input = document.getElementById("table-to-xport"); // Ensure your table has this id
@@ -67,6 +79,15 @@ function AllCustomize() {
           Download
         </button>
       </div>
+      <div className="search-container col-5 mb-4">
+        <input
+          type="text"
+          placeholder="Search by name, email, or phone number"
+          style={{border:'3px solid',borderRadius:'15px',fontSize:'20px'}}
+          value={searchQuery}
+          onChange={handleSearchInputChange}
+        />
+      </div>
       <table class="table table-striped" id="table-to-xport">
         <thead>
           <tr>
@@ -82,8 +103,8 @@ function AllCustomize() {
           </tr>
         </thead>
         <tbody>
-          {pack &&
-            pack.map((data, index) => (
+          {filteredUsers &&
+            filteredUsers.map((data, index) => (
               <tr key={data.user && data._id}>
                 <td>{index + 1}</td>
                 <td>{data.user && data.user.name}</td>

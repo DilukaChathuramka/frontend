@@ -8,7 +8,8 @@ function Empmanage() {
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
     const navigate = useNavigate();
-  
+    const [searchQuery, setSearchQuery] = useState("");
+
     useEffect(() => {
       const fetchUsers = async () => {
         try {
@@ -24,6 +25,15 @@ function Empmanage() {
       fetchUsers();
     }, []);
   
+    const handleSearchInputChange = (event) => {
+      setSearchQuery(event.target.value);
+    };
+  
+    const filteredUsers = users.filter((user) =>
+      user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      user.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      user.phoneNo.toString().includes(searchQuery)
+    );
     const handleDelete = async (id) => {
       try {
         await axios.patch(`/emp/editemp/${id}`);
@@ -33,6 +43,7 @@ function Empmanage() {
         console.error(err);
       }
     };
+    
   
     const hadleEdit = async (id) => {
       navigate(`/empEdit-edit/${id}`);
@@ -58,6 +69,15 @@ function Empmanage() {
     }
   return (
     <div>
+       <div className="search-container col-5 mb-4">
+        <input
+          type="text"
+          placeholder="Search by name, email, or phone number"
+          style={{border:'3px solid',borderRadius:'15px',fontSize:'20px'}}
+          value={searchQuery}
+          onChange={handleSearchInputChange}
+        />
+      </div>
     <table class="table table-striped">
       <thead>
         <tr>
@@ -71,7 +91,7 @@ function Empmanage() {
         </tr>
       </thead>
       <tbody>
-        {users
+        {filteredUsers
           .filter((user) => user.isActive)
           .map((user, index) => (
             <tr key={user._id}>
@@ -92,7 +112,7 @@ function Empmanage() {
                 <button
                   className="btn"
                   onClick={() => handleDelete(user._id)}
-                  style={{ backgroundColor: "red" }}
+                  style={{ backgroundColor: "red",color:'black'}}
                 >
                   Delete
                 </button>

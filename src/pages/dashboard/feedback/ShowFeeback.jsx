@@ -11,6 +11,7 @@ function ShowFeeback() {
   const  [driverFeedbackCount,setDriverFeedbackCount]=useState(0);
   const [vehicleFeedbackCount,setVehicleFeedbackCount]=useState(0);
   const [pending,setPending]=useState(0);
+  const [searchQuery, setSearchQuery] = useState("");
     const fetchFeedback = async () => {
     setIsLoading(true);
     try {
@@ -31,7 +32,14 @@ function ShowFeeback() {
   useEffect(() => {
     fetchFeedback();
   }, []); 
-  
+  const handleSearchInputChange = (event) => {
+    setSearchQuery(event.target.value);
+  };
+
+  const filteredUsers = feedback.filter((feedbacks) =>
+    feedbacks.userfeed.name.toLowerCase().includes(searchQuery.toLowerCase())
+    
+  );
   const totalFeedbackCount = feedback.length;
   const handelpending = async (id) => {
     try {
@@ -156,6 +164,15 @@ console.log(driverFeedbackCount)
       </div>
     </div>
   </div>
+  <div className="search-container col-5 mb-4">
+        <input
+          type="text"
+          placeholder="Search by name"
+          style={{border:'3px solid',borderRadius:'15px',fontSize:'20px'}}
+          value={searchQuery}
+          onChange={handleSearchInputChange}
+        />
+      </div>
       <table class="table table-striped">
         <thead>
           <tr>
@@ -169,8 +186,8 @@ console.log(driverFeedbackCount)
             <th scope="col">Delete</th>
           </tr>
         </thead>
-        {feedback &&
-          feedback.map((feedback, index) => (
+        {filteredUsers  &&
+          filteredUsers.map((feedback, index) => (
             <tbody>
               <tr key={index}>
                 <th scope="row">{index + 1}</th>

@@ -7,6 +7,8 @@ function Packagemanagment() {
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
     const navigate = useNavigate();
+  const [searchQuery, setSearchQuery] = useState("");
+
   
     useEffect(() => {
       const fetchpack = async () => {
@@ -22,6 +24,17 @@ function Packagemanagment() {
   
       fetchpack();
     }, []);
+
+    const handleSearchInputChange = (event) => {
+      setSearchQuery(event.target.value);
+    };
+  
+    const filteredUsers = pack.filter((packs) =>
+      packs.vehicleType.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      packs.packagename.toLowerCase().includes(searchQuery.toLowerCase()) 
+    
+    );
+  
   
     const handleDelete = async (id) => {
       try {
@@ -57,6 +70,15 @@ function Packagemanagment() {
     }
   return (
     <div>
+       <div className="search-container col-5 mb-4">
+        <input
+          type="text"
+          placeholder="Search by VehicleType, package Name"
+          style={{border:'3px solid',borderRadius:'15px',fontSize:'20px'}}
+          value={searchQuery}
+          onChange={handleSearchInputChange}
+        />
+      </div>
     <table class="table table-striped">
       <thead>
         <tr>
@@ -71,7 +93,7 @@ function Packagemanagment() {
         </tr>
       </thead>
       <tbody>
-        {pack
+        {filteredUsers
           .filter((packages) => packages.isActive)
           .map((packages, index) => (
             <tr key={packages._id}>

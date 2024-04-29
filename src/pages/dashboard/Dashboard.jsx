@@ -138,6 +138,12 @@ function Dashboard({ children }) {
                   </a>
                   
                 </div>
+                <div className="bg-white py-2 collapse-inner rounded">
+                  <a className="collapse-item" href="/log">
+                   User Log
+                  </a>
+                  
+                </div>
               </div>
             </li>
             {/* diver li */}

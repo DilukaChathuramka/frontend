@@ -1,8 +1,8 @@
 import axios from "axios";
 import React, { useState } from "react";
 import { useLocation } from "react-router-dom";
-
-import { useUser } from "../context/UserContext"
+import Swal from "sweetalert2";
+import { useUser } from "../context/UserContext";
 function Payment() {
   const [message, setMessage] = useState("");
   const [errMsg, setErrMsg] = useState("");
@@ -12,24 +12,36 @@ function Payment() {
   const [town, setTown] = useState("");
   const [phoneNo, setPhoneNo] = useState("");
   const [email, setEmail] = useState("");
-
-
-
   const [cardNumber, setCardNumber] = useState("");
   const [expiryMonth, setExpiryMonth] = useState("");
   const [expiryYear, setExpiryYear] = useState("");
   const [cvv, setCvv] = useState("");
 
-  const { user} = useUser();
+  const { user } = useUser();
 
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
 
   const packageId = queryParams.get("id");
   const customizeid = queryParams.get("customizeid");
-  const packagename = queryParams.get("name");
+  const packageType = queryParams.get("packageType");
   const price = queryParams.get("price");
-console.log(customizeid)
+  console.log(customizeid);
+
+  const handleCardNumberChange = (e) => {
+    const input = e.target.value.replace(/\s/g, ""); // Remove any existing whitespace
+    let formattedInput = "";
+
+    // Divide the input into groups of four digits
+    for (let i = 0; i < input.length; i++) {
+      if (i > 0 && i % 4 === 0) {
+        formattedInput += " "; // Add a space every four digits
+      }
+      formattedInput += input[i];
+    }
+
+    setCardNumber(formattedInput);
+  };
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -53,26 +65,47 @@ console.log(customizeid)
       },
     ];
 
-    try {
-      const response = await axios.post("/payment/addpayment", {
-        user: user._id,
-        packageName:packageId,
-        billDetails,
-        cardDetails,
-        customisePackage:customizeid,
-        total:price,
-      });
+    const confirmResult = await Swal.fire({
+      title: "Confirm Payment",
+      text: "Are you sure you want to proceed with the payment?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes, proceed",
+      cancelButtonText: "No, cancel",
+    });
+    if (confirmResult.isConfirmed) {
+      try {
+        const response = await axios.post("/payment/addpayment", {
+          user: user._id,
+          packageName: packageId,
+          billDetails,
+          cardDetails,
+          packageType,
+          customisePackage: customizeid,
+          total: price,
+        });
 
-      if (response.data.message) {
-        setMessage(response.data.message);
-      } // Handle the response as needed
-    } catch (error){
-      if (error.response && error.response.data) {
-        // Server-sent error message
-        setErrMsg(error.response.data.message || "Failed to add package.");
-      } else {
-        // Generic or network error
-        setErrMsg("An unexpected error occurred.");
+        if (response.data.message) {
+          setName("");
+          setAddress("");
+          setApartment("");
+          setTown("");
+          setPhoneNo("");
+          setEmail("");
+          setCardNumber("");
+          setExpiryMonth("");
+          setExpiryYear("");
+          setCvv("");
+          setMessage(response.data.message);
+        } // Handle the response as needed
+      } catch (error) {
+        if (error.response && error.response.data) {
+          // Server-sent error message
+          setErrMsg(error.response.data.message || "Failed to add package.");
+        } else {
+          // Generic or network error
+          setErrMsg("An unexpected error occurred.");
+        }
       }
     }
   };
@@ -104,7 +137,7 @@ console.log(customizeid)
                 type="first"
                 class="form-control"
                 id="inputFirst"
-                value={name}
+                value={user.name}
                 onChange={(e) => setName(e.target.value)}
                 style={{ width: "470px", height: "50px" }}
               />
@@ -157,7 +190,7 @@ console.log(customizeid)
                 type="Phone"
                 class="form-control"
                 id="inputPhone"
-                value={phoneNo}
+                value={user.phoneNo}
                 onChange={(e) => setPhoneNo(e.target.value)}
                 style={{ width: "470px", height: "50px" }}
               />
@@ -168,33 +201,21 @@ console.log(customizeid)
               </h5>
               <input
                 type="Email"
-                value={email}
+                value={user.email}
                 onChange={(e) => setEmail(e.target.value)}
                 class="form-control"
                 id="inputEmail"
                 style={{ width: "470px", height: "50px" }}
               />
             </div>
-            {/* <div className="d-flex align-items-center">
-              <input
-                class="form-check-input"
-                type="checkbox"
-                value=""
-                id="flexCheckDefault"
-              />
-              <label class="form-check-label" for="flexCheckDefault">
-                <h5 className="pt-2 px-2">
-                  Save this information for faster check-out next time
-                </h5>
-              </label>
-            </div> */}
+          
           </div>
         </div>
 
         <div className="col-lg-6 col-md-12 padding-style">
           <div>
             <div className="process-box-row">
-              <h3>Total: ${price}</h3>
+              <h3>Total: Rs {price}</h3>
             </div>
             <hr />
 
@@ -213,9 +234,10 @@ console.log(customizeid)
                     type="text"
                     class="form-control"
                     id="cardNumber"
+                    value={cardNumber}
                     placeholder="1234 1234 1234 1234"
-                    maxlength="19"
-                    onChange={(e) => setCardNumber(e.target.value)}
+                    maxLength="19" // Adjusted for spaces
+                    onChange={handleCardNumberChange}
                   />
                 </div>
 
@@ -226,6 +248,7 @@ console.log(customizeid)
                       type="text"
                       class="form-control"
                       id="expiryMonth"
+                      value={expiryMonth}
                       placeholder="MM"
                       maxlength="2"
                       onChange={(e) => setExpiryMonth(e.target.value)}
@@ -237,6 +260,7 @@ console.log(customizeid)
                       type="text"
                       class="form-control"
                       id="expiryYear"
+                      value={expiryYear}
                       placeholder="YY"
                       maxlength="2"
                       onChange={(e) => setExpiryYear(e.target.value)}
@@ -250,6 +274,7 @@ console.log(customizeid)
                     type="text"
                     class="form-control"
                     id="cvv"
+                    value={cvv}
                     placeholder="123"
                     maxlength="4"
                     onChange={(e) => setCvv(e.target.value)}

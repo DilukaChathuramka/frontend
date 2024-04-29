@@ -35,6 +35,7 @@ import UserProfile from "./components/UserProfile";
 import ProtectRouter from "./context/ProtectRoter";
 import Leavemanagment from "./pages/dashboard/driver/Leavemanagment";
 import Leave from "./components/Leave";
+import Userlog from "./pages/dashboard/employee/Userlog";
 axios.defaults.baseURL = "http://localhost:5000";
 axios.defaults.withCredentials = true;
 
@@ -109,12 +110,31 @@ function App() {
               </Dashboard>
             }
           />
-           <Route
+              <Route
             path="/payment"
             element={
+              <ProtectRouter>
               <Layout>
                 <Payment />
               </Layout>
+              </ProtectRouter>
+            }
+          
+          />
+          <Route
+            path="/allpay"
+            element={
+              <Dashboard>
+                <Allpayment />
+              </Dashboard>
+            }
+          />
+          <Route
+            path="/payment-details/:id"
+            element={
+              <Dashboard>
+                <PayementDetails />
+              </Dashboard>
             }
           />
            <Route
@@ -322,7 +342,17 @@ element={
             }
           />
 
+        <Route
+            path="/log"
+            element={
+              <Dashboard>
+                <Userlog/>
+              </Dashboard>
+            }
+          />
+
       </Routes>
+      
 
       </UserProvider>
     </>

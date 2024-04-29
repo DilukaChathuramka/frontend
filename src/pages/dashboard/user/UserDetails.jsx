@@ -7,6 +7,7 @@ function UserDetails() {
   const [users, setUsers] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -33,6 +34,16 @@ function UserDetails() {
     }
   };
 
+  const handleSearchInputChange = (event) => {
+    setSearchQuery(event.target.value);
+  };
+
+  const filteredUsers = users.filter((user) =>
+    user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    user.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    user.phoneNo.toString().includes(searchQuery)
+  );
+
   if (isLoading) {
     return (
       <div className="center-spinner">
@@ -54,7 +65,16 @@ function UserDetails() {
 
   return (
     <div>
-      <table class="table table-striped">
+      <div className="search-container col-5 mb-4">
+        <input
+          type="text"
+          placeholder="Search by name, email, or phone number"
+          style={{border:'3px solid',borderRadius:'15px',fontSize:'20px'}}
+          value={searchQuery}
+          onChange={handleSearchInputChange}
+        />
+      </div>
+      <table className="table table-striped">
         <thead>
           <tr>
             <th scope="col">No</th>
@@ -62,32 +82,31 @@ function UserDetails() {
             <th scope="col">Email</th>
             <th scope="col">Phone no</th>
             <th scope="col">Role</th>
-            <th scope="col">status</th>
+            <th scope="col">Status</th>
             <th scope="col">Delete</th>
-
           </tr>
         </thead>
         <tbody>
-                {users.filter(user => user.isActive).map((user,index) => (
-                    <tr key={user._id}>
-                        <td>{index+1}</td>
-                        <td>{user.name}</td>
-                        <td>{user.email}</td>
-                        <td>{user.phoneNo}</td>
-                        <td>{user.role}</td>
-                        <td>{user.isActive ? 'Yes' : 'No'}</td>
-                        <td>
-                  <button
-                    className="btn"
-                    onClick={() => handleDelete(user._id)}
-                    style={{ backgroundColor: "red",color:'black' }}
-                  >
-                    Delete
-                  </button>
-                </td>
-                    </tr>
-                ))}
-            </tbody>
+          {filteredUsers.map((user, index) => (
+            <tr key={user._id}>
+              <td>{index + 1}</td>
+              <td>{user.name}</td>
+              <td>{user.email}</td>
+              <td>{user.phoneNo}</td>
+              <td>{user.role}</td>
+              <td>{user.isActive ? "Yes" : "No"}</td>
+              <td>
+                <button
+                  className="btn"
+                  onClick={() => handleDelete(user._id)}
+                  style={{ backgroundColor: "red", color: "black" }}
+                >
+                  Delete
+                </button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
       </table>
     </div>
   );
