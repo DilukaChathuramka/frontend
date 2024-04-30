@@ -36,6 +36,7 @@ function CustommizePackage() {
         const response = await axios.get("/driver/alldriver");
         setDrivers(response.data);
       } catch (error) {
+        
         console.error("Error fetching drivers:", error);
         // Handle the error appropriately
       }
@@ -44,7 +45,7 @@ function CustommizePackage() {
     fetchVehicles();
     fetchDrivers();
   }, []);
-  useEffect(() => {
+  useEffect(() => {ll
     const newTotal = calculateTotal();
     setTotal(newTotal);
   }, [selectedOption, distance, vehicle, duration]);
