@@ -1,11 +1,14 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { BallTriangle } from "react-loader-spinner";
+import html2canvas from "html2canvas";
+import jsPDF from "jspdf";
 
 function Userlog() {
   const [users, setUsers] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+  const tableRef = useRef(null);
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -21,6 +24,26 @@ function Userlog() {
 
     fetchUsers();
   }, []);
+
+  const downloadPDF = () => {
+    const filename = `userlog_report.pdf`;
+
+    html2canvas(tableRef.current).then((canvas) => {
+      const imgData = canvas.toDataURL("image/png");
+      const pdf = new jsPDF("p", "mm", "a4");
+      const imgWidth = 210;
+      const imgHeight = (canvas.height * imgWidth) / canvas.width;
+// Add the heading "Login Report" to the PDF
+    // Add the heading "Login Report" to the PDF
+    pdf.text("Login Report", 10, 10);
+
+      pdf.addImage(imgData, "PNG", 0, 20, imgWidth, imgHeight);
+
+      pdf.save(filename);
+    });
+    toast.success("Emplye Report Genarate")
+
+  };
 
   if (isLoading) {
     return (
@@ -42,11 +65,14 @@ function Userlog() {
   }
   return (
     <div>
-        <div>
-           <h2 className="mb-3">User Login Report
-            </h2> 
-        </div>
-      <table class="table table-striped">
+      <div style={{ marginBottom: '20px' }}>
+        <p>This is the admin login report. You can download the report in PDF format below.</p>
+      </div>
+      <div style={{ display: "flex", justifyContent: "space-between" }}>
+        <h2 className="mb-3">Admin Login Report</h2>
+        <button className="mb-3" onClick={downloadPDF} style={{ color: "white", background: '#4e73df', padding: '10px', borderRadius: '.6rem' }}>Download Report</button>
+      </div>
+      <table ref={tableRef} className="table table-striped">
         <thead>
           <tr>
             <th scope="col">No</th>
@@ -65,7 +91,7 @@ function Userlog() {
             // Format the date (MM/DD/YYYY)
             const formattedDate = `${
               dateObj.getMonth() + 1
-            }/${dateObj.getDate()}/${dateObj.getFullYear()}`;
+              }/${dateObj.getDate()}/${dateObj.getFullYear()}`;
 
             // Format the time (HH:MM:SS)
             const formattedTime = `${dateObj.getHours()}:${(
