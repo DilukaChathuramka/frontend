@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { useUser } from "../context/UserContext";
 
+
 function Leave() {
   const [leaveMessage, setLeaveMessage] = useState("");
   const [title, setTitle] = useState("");

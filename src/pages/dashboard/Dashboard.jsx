@@ -62,7 +62,7 @@ function Dashboard({ children }) {
               href="#"
             >
               <div className="sidebar-brand-text mx-3">
-                Car Rental
+                Drive Hive Rentals
                 <FaCarSide />
               </div>
               <div className="text-center d-none d-md-inline">
