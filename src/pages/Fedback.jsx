@@ -52,14 +52,12 @@ console.log(feedback)
     <section class="bg-light py-3 py-md-5">
       <div class="container">
         <div className="d-flex mx-2">
-          <button className="btn" 
-          style={{ backgroundColor: "green",color:"black" }}
-           onClick={handleDriverFeedback}>
+          <button className="btn" onClick={handleDriverFeedback}>
             Feedback to Driver
           </button>
           <button
             className="btn mx-3"
-            style={{ backgroundColor: "green",color:"black" }}
+            style={{ backgroundColor: "green" }}
             onClick={handleCarFeedback}
           >
             Feedback to Car
@@ -70,7 +68,7 @@ console.log(feedback)
             <div className="d-flex justify-content-between">
               <div className="d-flex">
                 <FaCircleUser size={30} />
-                <h4 className="mx-2">{feedback.user && feedback.user.name}</h4>
+                <h4 className="mx-2">{feedback.userfeed && feedback.userfeed.name}</h4>
               </div>
               <h5 className="d-flex justify-content-end">{
                    <p>
@@ -85,11 +83,13 @@ console.log(feedback)
                  </p>
               }</h5>
             </div>
-            <div className="d-flex align-items-center ">
-              {feedback.vehicle?feedback.vehicle && feedback.vehicle.vehicleName:feedback.driver&&feedback.driver.name}
-             
+            <div className="d-flex align-items-center mb-4">
+             <b>
+             {feedback.vehiclefeed ? 'Vehicle Name: ' + (feedback.vehiclefeed.vehicleName ? feedback.vehiclefeed.vehicleName : 'Unknown') : 'Driver Name: ' + (feedback.driverfeed ? feedback.driverfeed.name : 'Unknown')}
 
-              <h6 className="mx-2">Rating</h6>
+               </b>
+
+             
             </div>
             <div className="feedback-message">
               <p>{feedback.message}</p>
