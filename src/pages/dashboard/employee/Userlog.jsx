@@ -3,7 +3,8 @@ import React, { useEffect, useState, useRef } from "react";
 import { BallTriangle } from "react-loader-spinner";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
-
+import {  toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 function Userlog() {
   const [users, setUsers] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -41,7 +42,7 @@ function Userlog() {
 
       pdf.save(filename);
     });
-    toast.success("Emplye Report Genarate")
+    toast.success("Loging Report Downloaded")
 
   };
 
