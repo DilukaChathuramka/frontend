@@ -1,15 +1,17 @@
 import React, { useEffect } from 'react'
 import { useState } from "react";
 import axios from "axios";
-import { useParams } from 'react-router-dom';
+import { useParams,useNavigate } from 'react-router-dom';
 import { BallTriangle } from 'react-loader-spinner';
+import {  toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 function Addemp() {
     const [message, setMessage] = useState("");
     const [errMsg, setErrMsg] = useState("");
     const [isLoading, setIsLoading] = useState(true);
     const [isValidEmail, setIsValidEmail] = useState(true);
     const [isValidPhone, setIsValidPhone] = useState(true);
-    
+    const navigate=useNavigate()
    
   
     
@@ -80,7 +82,12 @@ function Addemp() {
                 address:""
               });
             }
+            
+            toast.success("Employee Update Succuessfully")
+            navigate('/empManage')
           } catch (error) {
+            console.log("errr", error);
+            toast.error(error.response.data.message)
             setErrMsg("Check your Input fields");
           }
         }
@@ -103,11 +110,21 @@ function Addemp() {
                 address: "",
               });
             }
+            toast.success("Employee Register Succuessfully")
+            navigate('/empManage')
           } catch (error) {
+            console.log("errr", error);
+            toast.error(error.response.data.message)
             setErrMsg("Check your Input fields");
           }
         }
       } else {
+        if(!isValidEmail){
+          toast.error('please Enter Valid Email')
+        }
+        if(!isValidPhone){
+          toast.error('please Enter Valid phone number')
+        }
         setErrMsg("Valid email or phone number required");
       }
     };

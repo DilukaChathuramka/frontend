@@ -2,7 +2,8 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { BallTriangle } from "react-loader-spinner";
 import { useNavigate } from "react-router-dom";
-
+import {  toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 function Empmanage() {
     const [users, setUsers] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
@@ -37,6 +38,8 @@ function Empmanage() {
     const handleDelete = async (id) => {
       try {
         await axios.patch(`/emp/editemp/${id}`);
+        toast.success("Employee Succuessully Delete")
+
         const response = await axios.get("/emp/getAll");
         setUsers(response.data);
       } catch (err) {
@@ -68,15 +71,22 @@ function Empmanage() {
       return <div>Error: {error.message}</div>;
     }
   return (
-    <div>
-       <div className="search-container col-5 mb-4">
-        <input
-          type="text"
-          placeholder="Search by name, email, or phone number"
-          style={{border:'3px solid',borderRadius:'15px',fontSize:'20px'}}
-          value={searchQuery}
-          onChange={handleSearchInputChange}
-        />
+    <>
+       <div className="search-container  mb-4">
+       <input
+  type="text"
+  placeholder="Search by name, email, or phone number"
+  style={{
+    border: '3px solid',
+    borderRadius: '15px',
+    fontSize: '20px',
+    padding: '10px', // Add padding for better appearance
+    width: '100%', // Set width to fill its container
+  }}
+  value={searchQuery}
+  onChange={handleSearchInputChange}
+/>
+
       </div>
     <table class="table table-striped">
       <thead>
@@ -121,7 +131,7 @@ function Empmanage() {
           ))}
       </tbody>
     </table>
-  </div>
+  </>
   )
 }
 
