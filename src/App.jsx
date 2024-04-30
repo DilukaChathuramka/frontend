@@ -27,6 +27,7 @@ import ShowFeeback from "./pages/dashboard/feedback/ShowFeeback";
 import CustommizePackage from "./pages/CustommizePackage";
 import Addemp from "./pages/dashboard/employee/Addemp";
 import Empmanage from "./pages/dashboard/employee/Empmanage";
+import Userlog from './pages/dashboard/employee/Userlog.jsx'
 axios.defaults.baseURL = "http://localhost:5000";
 axios.defaults.withCredentials = true;
 
@@ -209,7 +210,14 @@ element={
               </Dashboard>
             }
           />
-
+           <Route
+            path="log"
+            element={
+              <Dashboard>
+                 <Userlog/>
+              </Dashboard>
+            }
+          />
       </Routes>
 
       </UserProvider>
