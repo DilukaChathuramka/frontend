@@ -14,7 +14,7 @@ function Cards() {
                 Earnings (Monthly)
               </div>
               <div className="h5 mb-0 font-weight-bold text-gray-800">
-                $40,000
+                Rs 40,000
               </div>
             </div>
             <div className="col-auto">
